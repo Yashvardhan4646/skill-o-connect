@@ -2,7 +2,6 @@
 //  SkillConnect Auth Module
 // ==========================
 
-const { auth, db, $, storage } = window.firebaseApp;
 
 // --- Sign Up ---
 $("signup-btn").onclick = async () => {

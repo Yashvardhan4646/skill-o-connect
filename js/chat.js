@@ -1,7 +1,7 @@
 // ==========================
 //  SkillConnect Chat Module
 // ==========================
-const { auth, db, $ } = window.firebaseApp;
+
 
 async function loadMessages() {
   const dmBox = $("dm-messages");

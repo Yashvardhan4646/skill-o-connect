@@ -1,106 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SkillConnect</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-<!-- Optional: map styling -->
-<style>
-  #map {
-    height: 350px;
-    width: 100%;
-    border-radius: 12px;
-    margin-top: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-</style>
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Leaflet Map CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    #map {
+      height: 350px;
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+  </style>
 </head>
 
 <body>
-  <!-- SIDEBAR -->
+  <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">SkillConnect</div>
     <button class="nav-btn active" id="nav-feed">Discover</button>
+    <button class="nav-btn" id="nav-map">Map</button>
     <button class="nav-btn" id="nav-messages">Messages</button>
     <button class="nav-btn" id="nav-profile">Profile</button>
-    <button class="nav-btn" id="nav-map">Map</button>
   </div>
 
-  <!-- MAIN -->
+  <!-- Main -->
   <div class="main">
     <div class="topbar">
       <div id="user-email-top"></div>
       <div class="controls">
-        <button id="dark-toggle" title="Toggle theme">🌙</button>
-        <button id="logout-btn" class="primary" style="display:none;">Logout</button>
+        <button id="dark-toggle">🌙</button>
+        <button id="logout-btn" style="display:none;">Logout</button>
       </div>
     </div>
 
-    <!-- Feed Section -->
-    <section class="section" id="feed-section">
+    <!-- FEED SECTION -->
+    <div class="section" id="feed-section">
       <div class="section-header">
         <h2>People near you sharing their skills</h2>
-        <button class="primary" id="openModalBtn">Share Skill</button>
+        <button class="primary" id="openModalBtn">Share your skill</button>
       </div>
-      <input type="text" id="searchInput" placeholder="Search by skill, location or tag...">
       <div id="posts"></div>
-      <div class="section" id="map-section" style="display:none;">
-  <h2>Explore Skills on Map</h2>
-  <div id="map"></div>
-</div>
+    </div>
 
-    </section>
+    <!-- MAP SECTION -->
+    <div class="section" id="map-section" style="display:none;">
+      <h2>Explore Skills on Map</h2>
+      <div id="map"></div>
+    </div>
 
-    <!-- Messages Section -->
-    <section class="section" id="dm-section" style="display:none;">
+    <!-- MESSAGES -->
+    <div class="section" id="dm-section" style="display:none;">
       <h2>Messages</h2>
       <input type="text" id="dm-to" placeholder="Recipient email">
       <input type="text" id="dm-msg" placeholder="Message">
       <button class="primary" id="send-dm-btn">Send</button>
       <div id="dm-messages" style="max-height:220px;overflow:auto;"></div>
-    </section>
+    </div>
 
-
-    <!-- Profile Section -->
-    <section class="section" id="profile-section" style="display:none;">
+    <!-- PROFILE -->
+    <div class="section" id="profile-section" style="display:none;">
       <h2>Your Profile</h2>
-      <img id="profile-pic" src="https://via.placeholder.com/80" alt="Profile" style="height:80px;border-radius:10px;margin-bottom:10px;">
+      <img src="https://via.placeholder.com/80" id="profile-pic" style="height:80px;border-radius:10px;margin-bottom:10px;">
       <input type="file" id="profile-upload">
       <button class="primary" id="upload-pic-btn">Upload</button>
-      <button class="primary" id="verify-btn">Upload Verification</button>
-      <h3 style="margin-top:20px;">Your Shared Skills</h3>
-<div id="user-posts"></div>
 
-      <div id="rating"></div>
-    </section>
+      <h3 style="margin-top:20px;">Your Shared Skills</h3>
+      <div id="user-posts"></div>
+    </div>
   </div>
 
-  <!-- Create Post Modal -->
+  <!-- POST MODAL -->
   <div id="postModal" class="modal">
     <div class="modal-content">
-      <h3>Share Your Skill</h3>
-      <input type="text" id="skill" placeholder="Skill (e.g. Guitar)">
+      <h3>Share your skill</h3>
+      <input type="text" id="skill" placeholder="Skill (e.g., Guitar, Web Design)">
       <input type="text" id="location" placeholder="Your Location">
-      <input type="text" id="experience" placeholder="Experience (e.g. 2 years)">
-      <input type="text" id="tags" placeholder="Tags (comma separated)">
-      <textarea id="description" placeholder="Describe your skill..."></textarea>
+      <input type="text" id="experience" placeholder="Experience (e.g., 2 years)">
+      <textarea id="description" placeholder="Describe your skill or what you can teach..."></textarea>
       <button class="primary" id="post-btn">Publish</button>
     </div>
   </div>
 
-  <!-- Login Popup -->
+  <!-- LOGIN POPUP -->
   <div id="loginPopup" class="modal">
     <div class="login-box">
       <h2>Welcome to SkillConnect</h2>
-      <p>Log in or sign up to share your skills.</p>
+      <p style="font-size:0.9rem;color:#555;margin-bottom:10px;">Log in or sign up to share your skills.</p>
       <input type="email" id="email" placeholder="Email">
       <input type="password" id="password" placeholder="Password">
       <button class="primary" id="signup-btn">Sign Up</button>
@@ -108,21 +108,22 @@
     </div>
   </div>
 
-  <!-- Firebase + JS -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Core JS Modules (correct order!) -->
   <script src="js/app.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/posts.js"></script>
   <script src="js/profile.js"></script>
   <script src="js/chat.js"></script>
-  <script src="js/ui.js"></script>
-  <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="js/map.js"></script>
-
+  <script src="js/map.js"></script>
 </body>
 </html>

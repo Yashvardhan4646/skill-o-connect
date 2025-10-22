@@ -1,7 +1,7 @@
 // ==========================
 //  SkillConnect Posts Module
 // ==========================
-const { auth, db, $, storage } = window.firebaseApp;
+
 
 // --- Share Skill Modal ---
 // --- Share Skill Modal (with map integration if available) ---

@@ -1,7 +1,7 @@
 // ==========================
 //  SkillConnect Map Module
 // ==========================
-const { auth, db, $ } = window.firebaseApp;
+
 
 let map;
 let userMarker;

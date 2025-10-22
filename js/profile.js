@@ -1,7 +1,6 @@
 // ==========================
 //  SkillConnect Profile Module
 // ==========================
-const { auth, db, storage, $ } = window.firebaseApp;
 
 async function loadProfile() {
   const user = auth.currentUser;
