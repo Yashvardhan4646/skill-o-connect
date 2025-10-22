@@ -1,87 +1,65 @@
-// ==========================
-//  SkillConnect Map Module
-// ==========================
-
+console.log("✅ Dynamic Leaflet Map loaded");
 
 let map;
-let userMarker;
-let postMarkers = [];
+let markers = [];
 
-// --- Initialize map ---
-function initMap() {
-  const mapDiv = document.getElementById("map");
-  if (!mapDiv) return;
+// Initialize Leaflet Map
+function initLeafletMap() {
+  map = L.map('map').setView([20.5937, 78.9629], 5); // India default
 
-  map = L.map("map").setView([20.5937, 78.9629], 5); // center on India
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: "© OpenStreetMap",
+  // Add OpenStreetMap layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  loadMapPosts();
+  loadMarkers(); // load posts when map initializes
 }
 
-// --- Load skill posts on map ---
-function loadMapPosts() {
-  db.ref("posts").on("value", async (snap) => {
-    postMarkers.forEach((m) => map.removeLayer(m));
-    postMarkers = [];
+// Load skill markers from Firebase posts
+async function loadMarkers() {
+  if (!db) return console.error("Firebase DB not ready");
 
-    snap.forEach((p) => {
-      const val = p.val();
-      if (val.latitude && val.longitude) {
-        const marker = L.marker([val.latitude, val.longitude])
-          .addTo(map)
-          .bindPopup(
-            `<b>${val.skill}</b><br>${val.email}<br>${val.location || ""}`
-          );
-        postMarkers.push(marker);
+  // Clear old markers
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  db.ref('posts').once('value', async (snap) => {
+    const posts = [];
+    snap.forEach(p => posts.push(p.val()));
+
+    for (const post of posts) {
+      if (!post.location) continue;
+
+      // Convert location name to coordinates using OpenStreetMap Nominatim
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(post.location)}`);
+        const data = await res.json();
+        if (data && data.length > 0) {
+          const { lat, lon } = data[0];
+
+          const marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map);
+          marker.bindPopup(`
+            <b>${post.skill || 'Unknown Skill'}</b><br>
+            ${post.experience || ''}<br>
+            📍 ${post.location}<br>
+            ✉️ ${post.email}
+          `);
+
+          markers.push(marker);
+        }
+      } catch (e) {
+        console.error("Geocoding failed for:", post.location, e);
       }
-    });
+    }
+
+    console.log(`✅ Loaded ${markers.length} markers`);
   });
 }
 
-// --- Attach location picker to post modal ---
-const postBtn = $("post-btn");
-if (postBtn) {
-  postBtn.onclick = async () => {
-    const user = auth.currentUser;
-    if (!user) return showToast("Login first!", "error");
-
-    const skill = $("skill").value.trim();
-    const location = $("location").value.trim();
-    const experience = $("experience").value.trim();
-    const description = $("description").value.trim();
-
-    if (!skill || !description) return showToast("Please fill required fields", "error");
-
-    let coords = null;
-    try {
-      const pos = await new Promise((resolve, reject) =>
-        navigator.geolocation.getCurrentPosition(resolve, reject)
-      );
-      coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-    } catch {
-      showToast("Couldn’t get your location (posting anyway)");
-    }
-
-    await db.ref("posts").push({
-      uid: user.uid,
-      email: user.email,
-      skill,
-      location,
-      experience,
-      description,
-      latitude: coords?.lat || null,
-      longitude: coords?.lng || null,
-      timestamp: Date.now(),
-    });
-
-    ["skill", "location", "experience", "description"].forEach((id) => ($(id).value = ""));
-    $("postModal").style.display = "none";
-    showToast("Skill shared successfully!");
-  };
-}
-
-window.initMap = initMap;
+// Open map and refresh size
+document.getElementById("nav-map").addEventListener("click", () => {
+  setTimeout(() => {
+    if (!map) initLeafletMap();
+    map.invalidateSize(); // Fix rendering issue when hidden initially
+  }, 300);
+});

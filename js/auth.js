@@ -1,50 +1,37 @@
-// ==========================
-//  SkillConnect Auth Module
-// ==========================
+// --- AUTH LOGIC ---
+console.log("✅ Auth script loaded");
 
+$('signup-btn').onclick = () => {
+  const email = $('email').value.trim();
+  const password = $('password').value.trim();
+  if (!email || !password) return alert('Enter email and password');
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => console.log('User signed up'))
+    .catch(e => alert(e.message));
+};
 
-// --- Sign Up ---
-$("signup-btn").onclick = async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value.trim();
-  if (!email || !password) return alert("Please fill in both fields.");
+$('login-btn').onclick = () => {
+  const email = $('email').value.trim();
+  const password = $('password').value.trim();
+  if (!email || !password) return alert('Enter email and password');
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => console.log('User logged in'))
+    .catch(e => alert(e.message));
+};
 
-  try {
-    const cred = await auth.createUserWithEmailAndPassword(email, password);
-    // create user node
-    await db.ref("users/" + cred.user.uid).set({
-      email,
-      joined: Date.now(),
-      verified: false,
-    });
-    $("loginPopup").style.display = "none";
-  } catch (err) {
-    alert(err.message);
+$('logout-btn').onclick = () => {
+  auth.signOut().then(() => console.log('User logged out'));
+};
+
+// --- On Auth Change ---
+auth.onAuthStateChanged(user => {
+  if (user) {
+    $('loginPopup').style.display = 'none';
+    $('logout-btn').style.display = 'block';
+    $('user-email-top').textContent = user.email;
+  } else {
+    $('loginPopup').style.display = 'flex';
+    $('logout-btn').style.display = 'none';
+    $('user-email-top').textContent = '';
   }
-};
-
-// --- Log In ---
-$("login-btn").onclick = async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value.trim();
-  if (!email || !password) return alert("Please fill in both fields.");
-
-  try {
-    await auth.signInWithEmailAndPassword(email, password);
-    $("loginPopup").style.display = "none";
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-// --- Log Out ---
-$("logout-btn").onclick = async () => {
-  await auth.signOut();
-  alert("Logged out successfully.");
-};
-
-// --- Prevent closing login modal when unauthenticated ---
-auth.onAuthStateChanged((user) => {
-  const popup = $("loginPopup");
-  popup.style.display = user ? "none" : "flex";
 });

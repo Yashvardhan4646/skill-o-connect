@@ -8,11 +8,19 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- Leaflet Map CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <!-- Leaflet Library -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha512-sA+ePHwT6MZIwuvyTx8lEZo7g8I4e4z2uK+DbDk96tzbDk3RMX3dTy5VbBuH8K8cS+lCH0+i3bG8ne+T/jJdPQ=="
+  crossorigin=""
+/>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha512-kx4UwC2fVpzxd/fYYI0I4RlfdcJbnZTz6p+CPQHBxLDf8X8sryDe4z0+AbKQgiN9qlco4Jqf7D84vLCpM0jFmg=="
+  crossorigin=""
+></script>
+
 
   <!-- Main CSS -->
   <link rel="stylesheet" href="css/style.css" />
@@ -58,10 +66,11 @@
     </div>
 
     <!-- MAP SECTION -->
-    <div class="section" id="map-section" style="display:none;">
-      <h2>Explore Skills on Map</h2>
-      <div id="map"></div>
-    </div>
+    <!-- MAP -->
+<div class="section" id="map-section" style="display:none;">
+  <h2>Nearby Skilled Users</h2>
+  <div id="map" style="width:100%;height:420px;border-radius:10px;margin-top:10px;"></div>
+</div>
 
     <!-- MESSAGES -->
     <div class="section" id="dm-section" style="display:none;">
@@ -108,22 +117,27 @@
     </div>
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Global app setup (Firebase + helpers) -->
+<script src="js/app.js"></script>
 
-  <!-- Core JS Modules (correct order!) -->
-  <script src="js/app.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/posts.js"></script>
-  <script src="js/profile.js"></script>
-  <script src="js/chat.js"></script>
-  <script src="js/map.js"></script>
+<!-- UI logic -->
+<script src="js/ui.js"></script>
+
+<!-- Core features -->
+<script src="js/auth.js"></script>
+<script src="js/posts.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/map.js"></script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
+
 </body>
 </html>
