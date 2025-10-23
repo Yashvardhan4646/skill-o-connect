@@ -18,6 +18,7 @@ window.onclick = (e) => {
 };
 
 // === PUBLISH POST ===
+// === PUBLISH POST (with Live Location) ===
 $('post-btn').onclick = () => {
   const user = auth.currentUser;
   if (!user) return alert('Please log in first.');
@@ -32,20 +33,53 @@ $('post-btn').onclick = () => {
     return;
   }
 
-  const postData = {
-    uid: user.uid,
-    email: user.email,
-    skill,
-    location,
-    experience,
-    description,
-    timestamp: Date.now()
-  };
+  // Ask for user's live location
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
 
-  db.ref('posts').push(postData);
-  postModal.style.display = 'none';
-  $('skill').value = $('location').value = $('experience').value = $('description').value = '';
-  console.log("✅ Post published");
+        const postData = {
+          uid: user.uid,
+          email: user.email,
+          skill,
+          location,
+          experience,
+          description,
+          latitude,
+          longitude,
+          timestamp: Date.now()
+        };
+
+        db.ref('posts').push(postData);
+        postModal.style.display = 'none';
+        $('skill').value = $('location').value = $('experience').value = $('description').value = '';
+        console.log("✅ Post published with live coordinates:", latitude, longitude);
+        alert("✅ Skill shared successfully with your live location!");
+      },
+      (err) => {
+        console.warn("⚠️ Location not granted:", err.message);
+
+        // Fallback (without coordinates)
+        const postData = {
+          uid: user.uid,
+          email: user.email,
+          skill,
+          location,
+          experience,
+          description,
+          timestamp: Date.now()
+        };
+
+        db.ref('posts').push(postData);
+        postModal.style.display = 'none';
+        $('skill').value = $('location').value = $('experience').value = $('description').value = '';
+        alert("✅ Skill shared (without GPS location).");
+      }
+    );
+  } else {
+    alert("❌ Geolocation not supported by your browser.");
+  }
 };
 
 // === DELETE POST (only by owner) ===
