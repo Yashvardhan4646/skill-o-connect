@@ -11,22 +11,72 @@
 
     /* HEADER */
     header {
-      background:linear-gradient(120deg,#2A7C6F,#3CAEA3);
+      background:linear-gradient(120deg,#2A7C6F,#48d1c3);
       color:#fff;
       padding:20px 70px;
       display:flex; justify-content:space-between; align-items:center;
       position:sticky; top:0; z-index:10;
       box-shadow:0 2px 10px rgba(0,0,0,0.1);
+      flex-wrap:wrap;
     }
     header h1 { font-size:1.7rem; font-weight:700; letter-spacing:0.5px; }
-    header nav a {
+
+    /* NAVIGATION */
+    nav {
+      display:flex;
+      gap:20px;
+      align-items:center;
+      transition:max-height 0.3s ease, opacity 0.3s ease;
+    }
+    nav a {
       color:white;
-      margin:0 15px;
       text-decoration:none;
       font-weight:500;
-      transition:0.2s;
+      transition:opacity 0.2s;
     }
-    header nav a:hover { opacity:0.8; }
+    nav a:hover { opacity:0.8; }
+
+    /* HAMBURGER */
+    .menu-toggle {
+      display:none;
+      background:none;
+      border:none;
+      color:white;
+      font-size:1.8rem;
+      cursor:pointer;
+    }
+
+    /* MOBILE MENU */
+    @media(max-width:768px){
+      header {
+        flex-direction:column;
+        align-items:flex-start;
+        padding:20px;
+      }
+      .menu-toggle {
+        display:block;
+        align-self:flex-end;
+      }
+      nav {
+        width:100%;
+        flex-direction:column;
+        overflow:hidden;
+        max-height:0;
+        opacity:0;
+      }
+      nav.open {
+        max-height:300px;
+        opacity:1;
+        margin-top:10px;
+      }
+      nav a {
+        display:block;
+        width:100%;
+        padding:10px 0;
+        text-align:center;
+        border-top:1px solid rgba(255,255,255,0.2);
+      }
+    }
 
     /* HERO */
     .hero {
@@ -63,7 +113,7 @@
       transition:all 0.3s ease;
       box-shadow:0 6px 15px rgba(42,124,111,0.25);
     }
-    .cta-btn:hover { background:#23675d; transform:translateY(-2px); }
+    .cta-btn:hover { background:#133a25; transform:translateY(-2px); }
 
     /* ABOUT */
     .about {
@@ -92,23 +142,22 @@
     }
     .feature-section:nth-child(even) { background:#fff; }
     .feature-img {
-  flex: 1;
-  min-width: 300px;
-  height: 280px;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.feature-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+      flex:1;
+      min-width:300px;
+      height:280px;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 4px 15px rgba(0,0,0,0.08);
+      background:#eee;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .feature-img img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
     .feature-text {
       flex:1.1;
       min-width:300px;
@@ -131,10 +180,7 @@
       text-align:center;
       padding:90px 50px;
     }
-    .buildathon h2 {
-      font-size:2rem;
-      margin-bottom:15px;
-    }
+    .buildathon h2 { font-size:2rem; margin-bottom:15px; }
     .buildathon p {
       max-width:700px;
       margin:auto;
@@ -151,20 +197,24 @@
       padding:40px 10px;
     }
     footer p { opacity:0.9; font-size:0.9rem; }
-    footer a {
-      color:white; text-decoration:none; font-weight:600; margin:0 6px;
-    }
+    footer a { color:white; text-decoration:none; font-weight:600; margin:0 6px; }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE FIXES */
     @media(max-width:900px){
       .feature-section{flex-direction:column;}
       .feature-img{order:-1;width:100%;height:240px;}
       .feature-text{text-align:center;}
     }
     @media(max-width:768px){
-      header{flex-direction:column;text-align:center;}
       .hero h2{font-size:2.2rem;}
       .hero p{font-size:1rem;}
+      .about{padding:60px 30px;}
+      .feature-section{padding:60px 30px;}
+      .buildathon{padding:60px 30px;}
+    }
+    @media(max-width:480px){
+      .hero h2{font-size:1.8rem;}
+      .cta-btn{padding:12px 28px;font-size:0.9rem;}
     }
   </style>
 </head>
@@ -173,7 +223,8 @@
   <!-- HEADER -->
   <header>
     <h1>SkillConnect</h1>
-    <nav>
+    <button class="menu-toggle" id="menuBtn">☰</button>
+    <nav id="navMenu">
       <a href="#about">About</a>
       <a href="#features">Features</a>
       <a href="#buildathon">Viksit Bharat</a>
@@ -196,52 +247,42 @@
 
   <!-- FEATURES -->
   <div id="features">
+    <section class="feature-section">
+      <div class="feature-img"><img src="img/home.png" alt="Discover Feature" /></div>
+      <div class="feature-text">
+        <h4>Discover Local Talent</h4>
+        <p>Find nearby users sharing their skills. Whether it's a coding mentor, fitness trainer, or art teacher — SkillConnect helps you connect with the right people locally.</p>
+      </div>
+    </section>
 
     <section class="feature-section">
-  <div class="feature-img">
-    <img src="img/home.png" alt="Discover Feature" />
-  </div>
-  <div class="feature-text">
-    <h4>Discover Local Talent</h4>
-    <p>Find nearby users sharing their skills. Whether it's a coding mentor, fitness trainer, or art teacher — SkillConnect helps you connect with the right people locally.</p>
-  </div>
-</section>
+      <div class="feature-text">
+        <h4>Chat & Collaborate</h4>
+        <p>Connect directly through messages, ask questions, share progress, or plan meetups. Collaboration starts with conversation — SkillConnect makes that effortless.</p>
+      </div>
+      <div class="feature-img"><img src="img/msg.png" alt="Chat Feature" /></div>
+    </section>
 
-<section class="feature-section">
-  <div class="feature-text">
-    <h4>Chat & Collaborate</h4>
-    <p>Connect directly through messages, ask questions, share progress, or plan meetups. Collaboration starts with conversation — SkillConnect makes that effortless.</p>
-  </div>
-  <div class="feature-img">
-    <img src="img/msg.png" alt="Chat Feature" />
-  </div>
-</section>
+    <section class="feature-section">
+      <div class="feature-img"><img src="img/share.png" alt="Share Feature" /></div>
+      <div class="feature-text">
+        <h4>Share What You Know</h4>
+        <p>Post your own skill — describe what you teach or create. Inspire others to learn and grow. Be a part of your community’s collective growth journey.</p>
+      </div>
+    </section>
 
-<section class="feature-section">
-  <div class="feature-img">
-    <img src="img/share.png" alt="Share Feature" />
-  </div>
-  <div class="feature-text">
-    <h4>Share What You Know</h4>
-    <p>Post your own skill — describe what you teach or create. Inspire others to learn and grow. Be a part of your community’s collective growth journey.</p>
-  </div>
-</section>
-
-<section class="feature-section">
-  <div class="feature-text">
-    <h4>Interactive Map</h4>
-    <p>See everyone around you on a live map — find mentors and learners in your area. The map uses live location and real-time updates for a smooth experience.</p>
-  </div>
-  <div class="feature-img">
-    <img src="img/map.png" alt="Map Feature" />
-  </div>
-</section>
-
+    <section class="feature-section">
+      <div class="feature-text">
+        <h4>Interactive Map</h4>
+        <p>See everyone around you on a live map — find mentors and learners in your area. The map uses live location and real-time updates for a smooth experience.</p>
+      </div>
+      <div class="feature-img"><img src="img/map.png" alt="Map Feature" /></div>
+    </section>
   </div>
 
   <!-- BUILDATHON -->
   <section class="buildathon" id="buildathon">
-    <h2> Built for Viksit Bharat Buildathon</h2>
+    <h2>Built for Viksit Bharat Buildathon</h2>
     <p>This project was proudly developed as part of the <strong>Viksit Bharat Buildathon</strong> — an initiative encouraging innovation, collaboration, and digital empowerment across India. SkillConnect embodies the spirit of a self-reliant India by empowering local communities to learn and share skills through technology.</p>
   </section>
 
@@ -251,6 +292,14 @@
   </footer>
 
   <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const navMenu = document.getElementById('navMenu');
+
+    menuBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+      menuBtn.textContent = navMenu.classList.contains('open') ? '✕' : '☰';
+    });
+
     function enterApp(){
       window.location.href = "main.html";
     }
