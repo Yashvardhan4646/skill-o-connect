@@ -2,125 +2,254 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SkillConnect</title>
+  <title>Skill-O-Connect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Inter font -->
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Leaflet -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-
-  <!-- YOUR UI CSS (UNCHANGED) -->
-  <link rel="stylesheet" href="css/style.css">
-
   <style>
-    #map {
-      height: 420px;
-      border-radius: 16px;
+    :root {
+      --bg: #f8f9fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --accent: #2563eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 28px 22px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .nav button {
+      width: 100%;
+      background: transparent;
       border: 1px solid var(--border);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .nav button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .main {
+      padding: 36px 42px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .feed {
+      max-width: 820px;
+    }
+
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+    }
+
+    .post-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .post-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .post-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .post-body {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+    }
+
+    .tag {
+      font-size: 12px;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+    }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Share skill */
+    .share-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .share-box input,
+    .share-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+      .main {
+        padding: 24px;
+      }
     }
   </style>
 </head>
 
 <body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">Skill-O-Connect</div>
+      <div class="nav">
+        <button>Feed</button>
+        <button>Messages</button>
+        <button>Profile</button>
+      </div>
+    </aside>
 
-<div class="app">
+    <main class="main">
+      <div class="header">
+        <h1>Community Feed</h1>
+        <button class="primary-btn">New Skill</button>
+      </div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">SkillConnect</div>
-    <div class="nav">
-      <button id="nav-feed">Discover</button>
-      <button id="nav-map">Map</button>
-      <button id="nav-messages">Messages</button>
-      <button id="nav-profile">Profile</button>
-    </div>
-  </aside>
+      <div class="share-box">
+        <input id="skill" placeholder="Skill (e.g. Web Dev)" />
+        <input id="location" placeholder="Location" />
+        <input id="exp" placeholder="Experience" />
+        <textarea id="desc" placeholder="Describe your skill"></textarea>
+        <button class="primary-btn" onclick="publishPost()">Publish</button>
+      </div>
 
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <div class="header">
-      <h1 id="page-title">Discover</h1>
-      <button class="primary-btn" id="openModalBtn">Share Skill</button>
-    </div>
-
-    <!-- FEED -->
-    <section class="feed section" id="feed-section">
-      <div id="posts"></div>
-    </section>
-
-    <!-- MAP -->
-    <section class="section" id="map-section" style="display:none;">
-      <div id="map"></div>
-    </section>
-
-    <!-- MESSAGES -->
-    <section class="section" id="dm-section" style="display:none; max-width:600px;">
-      <input id="dm-to" placeholder="Recipient email" style="margin-bottom:10px;">
-      <div id="dm-messages" style="margin:14px 0;"></div>
-      <input id="dm-msg" placeholder="Type a message…">
-      <button class="primary-btn" id="send-dm-btn" style="margin-top:10px;">
-        Send
-      </button>
-    </section>
-
-    <!-- PROFILE -->
-    <section class="section" id="profile-section" style="display:none; max-width:600px;">
-      <img id="profile-pic" src="https://via.placeholder.com/80" style="border-radius:12px;">
-      <input type="file" id="profile-upload">
-      <button class="primary-btn" id="upload-pic-btn">Upload</button>
-      <div id="your-posts" style="margin-top:24px;"></div>
-    </section>
-
-  </main>
-</div>
-
-<!-- POST MODAL -->
-<div id="postModal" class="modal">
-  <div class="modal-content">
-    <h3>Share your skill</h3>
-    <input id="skill" placeholder="Skill">
-    <input id="location" placeholder="Location">
-    <input id="experience" placeholder="Experience">
-    <textarea id="description" placeholder="Describe your skill"></textarea>
-    <button class="primary-btn" id="post-btn">Publish</button>
+      <div class="feed" id="feed"></div>
+    </main>
   </div>
-</div>
 
-<!-- LOGIN -->
-<div id="loginPopup" class="modal">
-  <div class="modal-content">
-    <h3>Welcome</h3>
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button class="primary-btn" id="signup-btn">Sign up</button>
-    <button class="primary-btn" id="login-btn">Login</button>
-  </div>
-</div>
+  <script>
+    function publishPost() {
+      const skill = document.getElementById("skill").value;
+      const desc = document.getElementById("desc").value;
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+      if (!skill || !desc) return;
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      const post = document.createElement("div");
+      post.className = "post";
+      post.innerHTML = `
+        <div class="post-head">
+          <div class="avatar"></div>
+          <div>
+            <div class="post-title">${skill}</div>
+            <div class="post-meta">Just now</div>
+          </div>
+        </div>
+        <div class="post-body">${desc}</div>
+        <div class="post-actions">
+          <span class="tag">Skill</span>
+          <button class="action-btn">Message</button>
+        </div>
+      `;
 
-<!-- YOUR EXISTING JS (UNCHANGED) -->
-<script src="js/app.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/posts.js"></script>
-<script src="js/profile.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/map.js"></script>
-
+      document.getElementById("feed").prepend(post);
+      document.querySelectorAll(".share-box input, .share-box textarea")
+        .forEach(el => el.value = "");
+    }
+  </script>
 </body>
 </html>
