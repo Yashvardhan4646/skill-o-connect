@@ -223,33 +223,154 @@
   </div>
 
   <script>
-    function publishPost() {
-      const skill = document.getElementById("skill").value;
-      const desc = document.getElementById("desc").value;
+/* ===============================
+   CORE STATE
+================================ */
+const DB = {
+  users: JSON.parse(localStorage.getItem("users") || "{}"),
+  posts: JSON.parse(localStorage.getItem("posts") || "[]"),
+  dms: JSON.parse(localStorage.getItem("dms") || "{}"),
+  session: JSON.parse(localStorage.getItem("session") || "null")
+};
 
-      if (!skill || !desc) return;
+function saveDB() {
+  localStorage.setItem("users", JSON.stringify(DB.users));
+  localStorage.setItem("posts", JSON.stringify(DB.posts));
+  localStorage.setItem("dms", JSON.stringify(DB.dms));
+  localStorage.setItem("session", JSON.stringify(DB.session));
+}
 
-      const post = document.createElement("div");
-      post.className = "post";
-      post.innerHTML = `
-        <div class="post-head">
-          <div class="avatar"></div>
-          <div>
-            <div class="post-title">${skill}</div>
-            <div class="post-meta">Just now</div>
-          </div>
+/* ===============================
+   AUTH (NO UI CHANGE)
+================================ */
+function signup(email, password) {
+  if (DB.users[email]) return alert("User already exists");
+  DB.users[email] = { email };
+  DB.session = email;
+  saveDB();
+  location.reload();
+}
+
+function login(email, password) {
+  if (!DB.users[email]) return alert("User not found");
+  DB.session = email;
+  saveDB();
+  location.reload();
+}
+
+/* ===============================
+   POSTS
+================================ */
+function renderPosts() {
+  const feed = document.querySelector(".feed");
+  if (!feed) return;
+
+  feed.innerHTML = "";
+  DB.posts.forEach(post => {
+    const el = document.createElement("div");
+    el.className = "post";
+    el.innerHTML = `
+      <div class="post-head">
+        <div class="avatar"></div>
+        <div>
+          <div class="post-title">${post.author}</div>
+          <div class="post-meta">${post.time}</div>
         </div>
-        <div class="post-body">${desc}</div>
-        <div class="post-actions">
-          <span class="tag">Skill</span>
-          <button class="action-btn">Message</button>
-        </div>
-      `;
+      </div>
+      <div class="post-body">${post.text}</div>
+      <div class="post-actions">
+        <span class="tag">${post.tag}</span>
+        <button class="action-btn" data-dm="${post.author}">Message</button>
+      </div>
+    `;
+    feed.appendChild(el);
+  });
+}
 
-      document.getElementById("feed").prepend(post);
-      document.querySelectorAll(".share-box input, .share-box textarea")
-        .forEach(el => el.value = "");
+function createPost(text) {
+  DB.posts.unshift({
+    author: DB.session || "Anonymous",
+    text,
+    tag: "Skill",
+    time: "Just now"
+  });
+  saveDB();
+  renderPosts();
+}
+
+/* ===============================
+   DMs (REAL, PER USER)
+================================ */
+function openDM(withUser) {
+  if (!DB.session) return alert("Login first");
+
+  const key = [DB.session, withUser].sort().join("|");
+  DB.dms[key] ||= [];
+
+  const msg = prompt("Send message to " + withUser);
+  if (!msg) return;
+
+  DB.dms[key].push({
+    from: DB.session,
+    text: msg,
+    time: Date.now()
+  });
+
+  saveDB();
+  alert("Message sent");
+}
+
+/* ===============================
+   EVENTS BINDING
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* Publish */
+  const publishBtn = document.querySelector(".primary-btn");
+  const textarea = document.querySelector("textarea");
+
+  if (publishBtn && textarea) {
+    publishBtn.onclick = () => {
+      if (!textarea.value.trim()) return;
+      createPost(textarea.value);
+      textarea.value = "";
+    };
+  }
+
+  /* DM buttons */
+  document.body.addEventListener("click", e => {
+    if (e.target.dataset?.dm) {
+      openDM(e.target.dataset.dm);
     }
-  </script>
+  });
+
+  /* Login / Signup */
+  const emailInput = document.querySelector('input[type="email"]');
+  const passInput = document.querySelector('input[type="password"]');
+
+  document.querySelectorAll("button").forEach(btn => {
+    if (btn.innerText.toLowerCase().includes("signup")) {
+      btn.onclick = () => signup(emailInput.value, passInput.value);
+    }
+    if (btn.innerText.toLowerCase().includes("login")) {
+      btn.onclick = () => login(emailInput.value, passInput.value);
+    }
+  });
+
+  renderPosts();
+});
+
+/* ===============================
+   LEAFLET (SAFE INIT)
+================================ */
+if (window.L) {
+  const mapEl = document.getElementById("map");
+  if (mapEl) {
+    const map = L.map(mapEl).setView([20.5937, 78.9629], 5);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+  }
+}
+</script>
+
 </body>
 </html>
