@@ -1,88 +1,101 @@
-// ==========================
-//  SkillConnect Chat Module
-// ==========================
+const db = firebase.database();
+const auth = firebase.auth();
 
-// --- Load Messages Function ---
-async function loadMessages() {
-  const dmBox = $("dm-messages");
-  const user = auth.currentUser;
+const dmToInput = document.getElementById("dm-to");
+const dmMsgInput = document.getElementById("dm-msg");
+const dmMessages = document.getElementById("dm-messages");
+const sendBtn = document.getElementById("send-dm-btn");
 
-  if (!user) {
-    dmBox.innerHTML = "<p>Please log in to view messages.</p>";
+let currentChatRef = null;
+
+// Helper: create unique chat ID (same for both users)
+function getChatId(uid1, uid2) {
+  return [uid1, uid2].sort().join("__");
+}
+
+// Load messages for selected user
+async function loadChat(targetEmail) {
+  const usersSnap = await db.ref("users").once("value");
+  let targetUid = null;
+
+  usersSnap.forEach(u => {
+    if (u.val().email === targetEmail) {
+      targetUid = u.key;
+    }
+  });
+
+  if (!targetUid) {
+    alert("User not found");
     return;
   }
 
-  // Listen for new messages in real time
-  db.ref("dms").on("value", (snap) => {
-    dmBox.innerHTML = "";
-    const msgs = [];
-    snap.forEach((m) => msgs.push(m.val()));
-    msgs.sort((a, b) => a.timestamp - b.timestamp);
+  const myUid = auth.currentUser.uid;
+  const chatId = getChatId(myUid, targetUid);
 
-    msgs.forEach((m) => {
-      if (m.from === user.email || m.to === user.email) {
-        const div = document.createElement("div");
-        div.style = `
-          background:${m.from === user.email ? "#eaf4f2" : "#f3f4f6"};
-          padding:8px 12px;margin:4px;border-radius:8px;
-          font-size:0.9rem;
-          word-wrap:break-word;
-        `;
-        div.textContent = `${m.from === user.email ? "You" : m.from}: ${m.msg}`;
-        dmBox.appendChild(div);
-      }
-    });
+  if (currentChatRef) currentChatRef.off();
 
-    dmBox.scrollTop = dmBox.scrollHeight;
+  dmMessages.innerHTML = "";
+  currentChatRef = db.ref("messages/" + chatId);
+
+  currentChatRef.on("child_added", snap => {
+    const msg = snap.val();
+    const div = document.createElement("div");
+
+    div.style.margin = "6px 0";
+    div.style.padding = "8px 10px";
+    div.style.borderRadius = "8px";
+    div.style.maxWidth = "80%";
+    div.style.fontSize = "0.9rem";
+
+    if (msg.from === myUid) {
+      div.style.marginLeft = "auto";
+      div.style.background = "#111";
+      div.style.color = "#fff";
+    } else {
+      div.style.background = "#f1f1f1";
+      div.style.color = "#000";
+    }
+
+    div.textContent = msg.text;
+    dmMessages.appendChild(div);
+    dmMessages.scrollTop = dmMessages.scrollHeight;
   });
 }
 
-// --- Send Message Button Logic ---
-$("send-dm-btn").onclick = async () => {
-  const to = $("dm-to").value.trim();
-  const msg = $("dm-msg").value.trim();
-  const user = auth.currentUser;
+// Send message
+sendBtn.onclick = async () => {
+  const text = dmMsgInput.value.trim();
+  const targetEmail = dmToInput.value.trim();
+  if (!text || !targetEmail) return;
 
-  if (!user) return showToast("Login first!", "error");
-  if (!to || !msg) return showToast("Enter recipient and message!", "error");
+  const usersSnap = await db.ref("users").once("value");
+  let targetUid = null;
 
-  try {
-    await db.ref("dms").push({
-      from: user.email,
-      to,
-      msg,
-      timestamp: Date.now(),
-    });
+  usersSnap.forEach(u => {
+    if (u.val().email === targetEmail) {
+      targetUid = u.key;
+    }
+  });
 
-    $("dm-msg").value = "";
-    showToast("Message sent!");
-  } catch (err) {
-    console.error("❌ Error sending message:", err);
-    showToast("Failed to send message!", "error");
+  if (!targetUid) {
+    alert("User not found");
+    return;
   }
+
+  const myUid = auth.currentUser.uid;
+  const chatId = getChatId(myUid, targetUid);
+
+  db.ref("messages/" + chatId).push({
+    from: myUid,
+    to: targetUid,
+    text,
+    timestamp: Date.now()
+  });
+
+  dmMsgInput.value = "";
 };
 
-// --- Auto Load Messages After Login ---
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    loadMessages();
-  } else {
-    const dmBox = $("dm-messages");
-    if (dmBox) dmBox.innerHTML = "<p>Please log in to view messages.</p>";
-  }
+// Load chat when email changes
+dmToInput.addEventListener("change", () => {
+  loadChat(dmToInput.value.trim());
 });
-
-// --- Load messages when Messages section is opened ---
-document.addEventListener("DOMContentLoaded", () => {
-  const msgNav = $("nav-messages");
-  if (msgNav) {
-    msgNav.addEventListener("click", () => {
-      if ($("dm-section")) {
-        $("dm-section").style.display = "block";
-        loadMessages();
-      }
-    });
-  }
-});
-
-window.loadMessages = loadMessages;
