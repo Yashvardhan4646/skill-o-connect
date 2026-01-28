@@ -1,74 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SkillConnect</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SkillConnect</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Confetti JS -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  /* Reset & base */
+  * {margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif;}
+  body {background:#f5f6fa; color:#1e1e2f; transition:0.3s;}
+  h2,h3 {color:#1e1e2f; margin-bottom:10px;}
+  button {cursor:pointer; border:none; outline:none; transition: all 0.2s;}
+  input, textarea {padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:100%; margin-bottom:10px;}
+  textarea {resize:none;}
+  .primary {background:#1e90ff; color:white; padding:8px 16px; border-radius:8px; font-weight:600;}
+  .primary:hover {background:#0f7ae5;}
 
-  <style>
-    /* Reset & Base */
-    * {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif;}
-    body {background:#f9f9f9; transition: background 0.3s, color 0.3s; color:#333;}
-    h2,h3 {color:#333; margin-bottom:10px;}
-    button {cursor:pointer; border:none; outline:none; transition: all 0.2s;}
-    .primary {background:#a3cef1;color:white;padding:8px 16px;border-radius:8px; font-weight:600;}
-    .primary:hover {background:#87b8e1;}
-    input,textarea {padding:8px 12px;border:1px solid #ccc;border-radius:8px;width:100%; margin-bottom:10px;}
-    textarea {resize:none;}
+  /* Sidebar */
+  .sidebar {position:fixed; left:0; top:0; width:220px; height:100%; background:#1e1e2f; display:flex; flex-direction:column; align-items:center; padding-top:20px;}
+  .logo {font-size:1.6rem; font-weight:700; margin-bottom:30px; color:white;}
+  .nav-btn {width:90%; margin:5px 0; padding:10px; border-radius:8px; background:transparent; color:white; text-align:left;}
+  .nav-btn.active, .nav-btn:hover {background:#2f2f4d;}
 
-    /* Sidebar */
-    .sidebar {position:fixed; left:0; top:0; width:220px; height:100%; background:linear-gradient(180deg,#a3cef1,#c8f0fc); display:flex; flex-direction:column; align-items:center; padding-top:20px;}
-    .logo {font-size:1.6rem; font-weight:700; margin-bottom:30px; color:#fff;}
-    .nav-btn {width:90%; margin:5px 0; padding:10px; border-radius:10px; background:transparent; color:#fff; font-weight:600; text-align:left;}
-    .nav-btn.active, .nav-btn:hover {background:rgba(255,255,255,0.2);}
+  /* Main content */
+  .main {margin-left:220px; padding:20px;}
+  .topbar {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+  .controls button {margin-left:10px; padding:6px 10px; border-radius:6px; background:#1e90ff; color:white;}
+  .controls button:hover {background:#0f7ae5;}
 
-    /* Main content */
-    .main {margin-left:220px; padding:20px;}
-    .topbar {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
-    .controls button {margin-left:10px; padding:6px 10px; border-radius:8px; background:#a3cef1;color:white;}
-    .controls button:hover {background:#87b8e1;}
+  /* Sections */
+  .section {background:white; border-radius:10px; padding:20px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+  .section-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;}
 
-    /* Sections */
-    .section {background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,0,0,0.05);}
-    .section-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;}
-    
-    /* Posts */
-    .post-card {background:#f0f8ff; padding:15px; border-radius:10px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.05); position:relative;}
-    .post-card h4 {margin-bottom:5px;}
-    .post-card p {font-size:0.9rem; color:#555;}
-    .like-btn {position:absolute; top:10px; right:10px; cursor:pointer; font-size:1.2rem; color:#ff6b6b;}
-    .like-btn.liked {color:#ff0000;}
-    
-    /* Modal */
-    .modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:100;}
-    .modal-content {background:white; padding:20px; border-radius:12px; width:90%; max-width:400px; animation:fadeIn 0.3s;}
-    @keyframes fadeIn {from{opacity:0;transform:translateY(-20px);} to{opacity:1; transform:translateY(0);}}
+  /* Posts */
+  .post-card {background:#fdfdfd; padding:15px; border-radius:8px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.05); position:relative;}
+  .post-card h4 {margin-bottom:5px;}
+  .post-card p {font-size:0.9rem; color:#555;}
+  .like-btn {position:absolute; top:10px; right:10px; cursor:pointer; font-size:1.2rem; color:#ff4b5c;}
+  .like-btn.liked {color:#e63946;}
 
-    /* Profile */
-    #profile-pic {border-radius:50%; width:80px; height:80px; margin-bottom:10px; object-fit:cover;}
+  /* Modal */
+  .modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:100;}
+  .modal-content {background:white; padding:20px; border-radius:10px; width:90%; max-width:400px; animation:fadeIn 0.3s;}
+  @keyframes fadeIn {from{opacity:0;transform:translateY(-20px);} to{opacity:1; transform:translateY(0);}}
 
-    /* Toast notification */
-    #toast {position:fixed; bottom:20px; right:20px; background:#a3cef1; color:white; padding:12px 20px; border-radius:10px; display:none; box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+  /* Profile */
+  #profile-pic {border-radius:50%; width:80px; height:80px; margin-bottom:10px; object-fit:cover;}
 
-    /* Dark mode */
-    body.dark {background:#1a1a1a; color:#eee;}
-    body.dark .main {color:#eee;}
-    body.dark .section {background:#222;}
-    body.dark input, body.dark textarea {background:#333; color:#eee; border:1px solid #555;}
-    body.dark .sidebar {background:linear-gradient(180deg,#0b3c5d,#1a5a8f);}
-    body.dark .primary {background:#3a7ca5;}
-    body.dark .primary:hover {background:#2b5f7d;}
-  </style>
+  /* Toast notification */
+  #toast {position:fixed; bottom:20px; right:20px; background:#1e90ff; color:white; padding:12px 20px; border-radius:8px; display:none; box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+
+  /* Dark mode */
+  body.dark {background:#121212; color:#eee;}
+  body.dark .main {color:#eee;}
+  body.dark .section {background:#1f1f2f;}
+  body.dark input, body.dark textarea {background:#2a2a3d; color:#eee; border:1px solid #444;}
+  body.dark .sidebar {background:#1e1e2f;}
+  body.dark .primary {background:#0f7ae5;}
+  body.dark .primary:hover {background:#0d6acc;}
+</style>
 </head>
 
 <body>
@@ -95,9 +92,9 @@
     <div class="section" id="feed-section">
       <div class="section-header">
         <h2>People near you sharing their skills</h2>
-        <div>
-          <input type="text" id="search-posts" placeholder="Search by skill or location" style="margin-right:10px;">
-          <button class="primary" id="openModalBtn">Share your skill</button>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="search-posts" placeholder="Search skill or location">
+          <button class="primary" id="openModalBtn">Share Skill</button>
         </div>
       </div>
       <div id="posts"></div>
@@ -125,7 +122,7 @@
       <input type="file" id="profile-upload">
       <button class="primary" id="upload-pic-btn">Upload</button>
 
-      <hr style="margin:20px 0;border:none;border-top:1px solid #eee;">
+      <hr style="margin:20px 0;border:none;border-top:1px solid #ddd;">
 
       <h3>Your Shared Skills <span id="post-count" style="font-weight:400;color:#555;"></span></h3>
       <div id="your-posts" style="max-height:300px;overflow-y:auto;"></div>
@@ -135,11 +132,11 @@
   <!-- POST MODAL -->
   <div id="postModal" class="modal">
     <div class="modal-content">
-      <h3>Share your skill</h3>
-      <input type="text" id="skill" placeholder="Skill (e.g., Guitar, Web Design)">
-      <input type="text" id="location" placeholder="Your Location">
+      <h3>Share Your Skill</h3>
+      <input type="text" id="skill" placeholder="Skill (e.g., Web Design)">
+      <input type="text" id="location" placeholder="Location">
       <input type="text" id="experience" placeholder="Experience (e.g., 2 years)">
-      <textarea id="description" placeholder="Describe your skill or what you can teach..."></textarea>
+      <textarea id="description" placeholder="Describe your skill..."></textarea>
       <button class="primary" id="post-btn">Publish</button>
     </div>
   </div>
@@ -165,7 +162,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-  <!-- App scripts -->
+  <!-- Your app scripts -->
   <script src="js/app.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/auth.js"></script>
@@ -174,14 +171,10 @@
   <script src="js/chat.js"></script>
   <script src="js/map.js"></script>
 
-  <!-- Google Maps -->
-  <script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-
-  <!-- UI Logic -->
   <script>
     // Dark mode toggle
     const darkToggle = document.getElementById('dark-toggle');
-    darkToggle.addEventListener('click',()=>{
+    darkToggle.addEventListener('click', ()=>{
       document.body.classList.toggle('dark');
     });
 
@@ -192,9 +185,7 @@
       btn.addEventListener('click',()=>{
         navBtns.forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
-        sections.forEach(s=>{
-          document.getElementById(s+'-section').style.display='none';
-        });
+        sections.forEach(s=>document.getElementById(s+'-section').style.display='none');
         document.getElementById(sections[i]+'-section').style.display='block';
       });
     });
@@ -231,9 +222,9 @@
       setTimeout(()=>toast.style.display='none',3000);
     }
 
-    // Confetti animation for new posts
+    // Confetti for new post
     function celebratePost(){
-      confetti({particleCount:100, spread:70, origin:{y:0.6}});
+      confetti({particleCount:80, spread:60, origin:{y:0.6}});
     }
   </script>
 </body>
