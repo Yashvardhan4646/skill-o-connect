@@ -2,233 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Skill-O-Connect</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillConnect</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Leaflet Library -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha512-sA+ePHwT6MZIwuvyTx8lEZo7g8I4e4z2uK+DbDk96tzbDk3RMX3dTy5VbBuH8K8cS+lCH0+i3bG8ne+T/jJdPQ=="
+  crossorigin=""
+/>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha512-kx4UwC2fVpzxd/fYYI0I4RlfdcJbnZTz6p+CPQHBxLDf8X8sryDe4z0+AbKQgiN9qlco4Jqf7D84vLCpM0jFmg=="
+  crossorigin=""
+></script>
+
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/style.css" />
 
   <style>
-    :root {
-      --bg: #f8f9fb;
-      --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e5e7eb;
-      --accent: #2563eb;
-    }
+    #map {
+      #map {
+  width: 100%;
+  height: 420px;
+  border-radius: 10px;
+  background: #e5e7eb; /* light grey fallback */
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Inter", system-ui, sans-serif;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .app {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      background: var(--card);
-      border-right: 1px solid var(--border);
-      padding: 28px 22px;
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 32px;
-    }
-
-    .nav button {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .nav button:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .main {
-      padding: 36px 42px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-    }
-
-    .primary-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .feed {
-      max-width: 820px;
-    }
-
-    .post {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 18px;
-    }
-
-    .post-head {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #e5e7eb;
-      flex-shrink: 0;
-    }
-
-    .post-title {
-      font-weight: 600;
-      font-size: 15px;
-    }
-
-    .post-meta {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .post-body {
-      font-size: 14px;
-      color: #334155;
-      line-height: 1.6;
-      margin-top: 10px;
-    }
-
-    .post-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 14px;
-    }
-
-    .tag {
-      font-size: 12px;
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: 999px;
-      color: var(--muted);
-    }
-
-    .action-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    /* Share skill */
-    .share-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 24px;
-    }
-
-    .share-box input,
-    .share-box textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        display: none;
-      }
-      .main {
-        padding: 24px;
-      }
     }
   </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 </head>
 
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="logo">Skill-O-Connect</div>
-      <div class="nav">
-        <button>Feed</button>
-        <button>Messages</button>
-        <button>Profile</button>
-      </div>
-    </aside>
-
-    <main class="main">
-      <div class="header">
-        <h1>Community Feed</h1>
-        <button class="primary-btn">New Skill</button>
-      </div>
-
-      <div class="share-box">
-        <input id="skill" placeholder="Skill (e.g. Web Dev)" />
-        <input id="location" placeholder="Location" />
-        <input id="exp" placeholder="Experience" />
-        <textarea id="desc" placeholder="Describe your skill"></textarea>
-        <button class="primary-btn" onclick="publishPost()">Publish</button>
-      </div>
-
-      <div class="feed" id="feed"></div>
-    </main>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">SkillConnect</div>
+    <button class="nav-btn active" id="nav-feed">Discover</button>
+    <button class="nav-btn" id="nav-map">Map</button>
+    <button class="nav-btn" id="nav-messages">Messages</button>
+    <button class="nav-btn" id="nav-profile">Profile</button>
   </div>
 
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div id="user-email-top"></div>
+      <div class="controls">
+        <button id="dark-toggle">🌙</button>
+        <button id="logout-btn" style="display:none;">Logout</button>
+      </div>
+    </div>
+
+    <!-- FEED SECTION -->
+    <div class="section" id="feed-section">
+      <div class="section-header">
+        <h2>People near you sharing their skills</h2>
+        <button class="primary" id="openModalBtn">Share your skill</button>
+      </div>
+      <div id="posts"></div>
+    </div>
+
+    <!-- MAP SECTION -->
+    <!-- MAP -->
+<div class="section" id="map-section" style="display:none;">
+  <h2>Nearby Skilled Users</h2>
+  <div id="map" style="width:100%;height:420px;border-radius:10px;margin-top:10px;"></div>
+</div>
+
+    <!-- MESSAGES -->
+    <div class="section" id="dm-section" style="display:none;">
+      <h2>Messages</h2>
+      <input type="text" id="dm-to" placeholder="Recipient email">
+      <input type="text" id="dm-msg" placeholder="Message">
+      <button class="primary" id="send-dm-btn">Send</button>
+      <div id="dm-messages" style="max-height:220px;overflow:auto;"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="section" id="profile-section" style="display:none;">
+  <h2>Your Profile</h2>
+  <img src="https://via.placeholder.com/80" id="profile-pic" style="height:80px;border-radius:10px;margin-bottom:10px;">
+  <input type="file" id="profile-upload">
+  <button class="primary" id="upload-pic-btn">Upload</button>
+
+  <hr style="margin:20px 0;border:none;border-top:1px solid #eee;">
+
+  <h3 style="margin-bottom:10px;">Your Shared Skills</h3>
+  <div id="your-posts" style="max-height:300px;overflow-y:auto;"></div>
+</div>
+
+
+  <!-- POST MODAL -->
+  <div id="postModal" class="modal">
+    <div class="modal-content">
+      <h3>Share your skill</h3>
+      <input type="text" id="skill" placeholder="Skill (e.g., Guitar, Web Design)">
+      <input type="text" id="location" placeholder="Your Location">
+      <input type="text" id="experience" placeholder="Experience (e.g., 2 years)">
+      <textarea id="description" placeholder="Describe your skill or what you can teach..."></textarea>
+      <button class="primary" id="post-btn">Publish</button>
+    </div>
+  </div>
+
+  <!-- LOGIN POPUP -->
+  <div id="loginPopup" class="modal">
+    <div class="login-box">
+      <h2>Welcome to SkillConnect</h2>
+      <p style="font-size:0.9rem;color:#555;margin-bottom:10px;">Log in or sign up to share your skills.</p>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <button class="primary" id="signup-btn">Sign Up</button>
+      <button class="primary" id="login-btn">Login</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<!-- Global app setup (Firebase + helpers) -->
+ <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="js/app.js"></script>
+
+<!-- UI logic -->
+<script src="js/ui.js"></script>
+
+<!-- Core features -->
+<script src="js/auth.js"></script>
+<script src="js/posts.js"></script>
+<script src="js/profile.js"></script>
 <script src="js/chat.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/posts.js"></script>
-  <script src="js/profile.js"></script>
-  <script src="js/ui.js"></script>
+<script src="js/map.js"></script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
 
 </body>
 </html>
