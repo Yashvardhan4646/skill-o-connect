@@ -5,227 +5,281 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SkillConnect</title>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
-  /* Reset & base */
-  * {margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif;}
-  body {background:#f5f6fa; color:#1e1e2f; transition:0.3s;}
-  h2,h3 {color:#1e1e2f; margin-bottom:10px;}
-  button {cursor:pointer; border:none; outline:none; transition: all 0.2s;}
-  input, textarea {padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:100%; margin-bottom:10px;}
-  textarea {resize:none;}
-  .primary {background:#1e90ff; color:white; padding:8px 16px; border-radius:8px; font-weight:600;}
-  .primary:hover {background:#0f7ae5;}
+/* ================= BASE ================= */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { background: #0b1220; color: #e5e7eb; }
 
-  /* Sidebar */
-  .sidebar {position:fixed; left:0; top:0; width:220px; height:100%; background:#1e1e2f; display:flex; flex-direction:column; align-items:center; padding-top:20px;}
-  .logo {font-size:1.6rem; font-weight:700; margin-bottom:30px; color:white;}
-  .nav-btn {width:90%; margin:5px 0; padding:10px; border-radius:8px; background:transparent; color:white; text-align:left;}
-  .nav-btn.active, .nav-btn:hover {background:#2f2f4d;}
+button, input, textarea {
+  background: #020617;
+  border: 1px solid #1f2937;
+  color: #e5e7eb;
+  padding: 10px 12px;
+  border-radius: 8px;
+  outline: none;
+}
 
-  /* Main content */
-  .main {margin-left:220px; padding:20px;}
-  .topbar {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
-  .controls button {margin-left:10px; padding:6px 10px; border-radius:6px; background:#1e90ff; color:white;}
-  .controls button:hover {background:#0f7ae5;}
+button { cursor: pointer; }
+button:hover { background: #020617; border-color: #334155; }
 
-  /* Sections */
-  .section {background:white; border-radius:10px; padding:20px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,0,0,0.05);}
-  .section-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;}
+.primary {
+  background: #2563eb;
+  border: none;
+}
+.primary:hover {
+  background: #1d4ed8;
+}
 
-  /* Posts */
-  .post-card {background:#fdfdfd; padding:15px; border-radius:8px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.05); position:relative;}
-  .post-card h4 {margin-bottom:5px;}
-  .post-card p {font-size:0.9rem; color:#555;}
-  .like-btn {position:absolute; top:10px; right:10px; cursor:pointer; font-size:1.2rem; color:#ff4b5c;}
-  .like-btn.liked {color:#e63946;}
+/* ================= LAYOUT ================= */
+.sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: 220px;
+  height: 100vh;
+  background: #020617;
+  border-right: 1px solid #1f2937;
+  padding: 20px;
+}
 
-  /* Modal */
-  .modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:100;}
-  .modal-content {background:white; padding:20px; border-radius:10px; width:90%; max-width:400px; animation:fadeIn 0.3s;}
-  @keyframes fadeIn {from{opacity:0;transform:translateY(-20px);} to{opacity:1; transform:translateY(0);}}
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
 
-  /* Profile */
-  #profile-pic {border-radius:50%; width:80px; height:80px; margin-bottom:10px; object-fit:cover;}
+.nav-btn {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 8px;
+  background: transparent;
+  border: none;
+  color: #cbd5f5;
+}
+.nav-btn.active, .nav-btn:hover {
+  background: #020617;
+  border: 1px solid #1f2937;
+}
 
-  /* Toast notification */
-  #toast {position:fixed; bottom:20px; right:20px; background:#1e90ff; color:white; padding:12px 20px; border-radius:8px; display:none; box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+.main {
+  margin-left: 220px;
+  padding: 24px;
+}
 
-  /* Dark mode */
-  body.dark {background:#121212; color:#eee;}
-  body.dark .main {color:#eee;}
-  body.dark .section {background:#1f1f2f;}
-  body.dark input, body.dark textarea {background:#2a2a3d; color:#eee; border:1px solid #444;}
-  body.dark .sidebar {background:#1e1e2f;}
-  body.dark .primary {background:#0f7ae5;}
-  body.dark .primary:hover {background:#0d6acc;}
+/* ================= TOPBAR ================= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #1f2937;
+  padding-bottom: 16px;
+}
+
+/* ================= SECTIONS ================= */
+.section {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* ================= FEED CARDS ================= */
+.post-card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  margin-bottom: 12px;
+}
+
+.post-card img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.post-content p {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+/* ================= MAP ================= */
+#map {
+  width: 100%;
+  height: 420px;
+  border-radius: 10px;
+}
+
+/* ================= MODALS ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 420px;
+}
+
+/* ================= PROFILE ================= */
+#profile-pic {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+}
 </style>
 </head>
 
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">SkillConnect</div>
-    <button class="nav-btn active" id="nav-feed">Discover</button>
-    <button class="nav-btn" id="nav-map">Map</button>
-    <button class="nav-btn" id="nav-messages">Messages</button>
-    <button class="nav-btn" id="nav-profile">Profile</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo">SkillConnect</div>
+  <button class="nav-btn active" id="nav-feed">Discover</button>
+  <button class="nav-btn" id="nav-map">Map</button>
+  <button class="nav-btn" id="nav-messages">Messages</button>
+  <button class="nav-btn" id="nav-profile">Profile</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div id="user-email-top"></div>
+    <button id="logout-btn" class="primary" style="display:none;">Logout</button>
   </div>
 
-  <!-- Main -->
-  <div class="main">
-    <div class="topbar">
-      <div id="user-email-top"></div>
-      <div class="controls">
-        <button id="dark-toggle">🌙</button>
-        <button id="logout-btn" style="display:none;">Logout</button>
-      </div>
+  <!-- FEED -->
+  <div class="section" id="feed-section">
+    <div class="section-header">
+      <h2>Discover Skills</h2>
+      <button class="primary" id="openModalBtn">Share Skill</button>
     </div>
-
-    <!-- FEED SECTION -->
-    <div class="section" id="feed-section">
-      <div class="section-header">
-        <h2>People near you sharing their skills</h2>
-        <div style="display:flex; gap:10px;">
-          <input type="text" id="search-posts" placeholder="Search skill or location">
-          <button class="primary" id="openModalBtn">Share Skill</button>
-        </div>
-      </div>
-      <div id="posts"></div>
-    </div>
-
-    <!-- MAP SECTION -->
-    <div class="section" id="map-section" style="display:none;">
-      <h2>Nearby Skilled Users</h2>
-      <div id="map" style="width:100%;height:420px;border-radius:10px;margin-top:10px;"></div>
-    </div>
-
-    <!-- MESSAGES -->
-    <div class="section" id="dm-section" style="display:none;">
-      <h2>Messages</h2>
-      <input type="text" id="dm-to" placeholder="Recipient email">
-      <input type="text" id="dm-msg" placeholder="Message">
-      <button class="primary" id="send-dm-btn">Send</button>
-      <div id="dm-messages" style="max-height:220px;overflow:auto;"></div>
-    </div>
-
-    <!-- PROFILE -->
-    <div class="section" id="profile-section" style="display:none;">
-      <h2>Your Profile</h2>
-      <img src="https://via.placeholder.com/80" id="profile-pic">
-      <input type="file" id="profile-upload">
-      <button class="primary" id="upload-pic-btn">Upload</button>
-
-      <hr style="margin:20px 0;border:none;border-top:1px solid #ddd;">
-
-      <h3>Your Shared Skills <span id="post-count" style="font-weight:400;color:#555;"></span></h3>
-      <div id="your-posts" style="max-height:300px;overflow-y:auto;"></div>
-    </div>
+    <div id="posts"></div>
   </div>
 
-  <!-- POST MODAL -->
-  <div id="postModal" class="modal">
-    <div class="modal-content">
-      <h3>Share Your Skill</h3>
-      <input type="text" id="skill" placeholder="Skill (e.g., Web Design)">
-      <input type="text" id="location" placeholder="Location">
-      <input type="text" id="experience" placeholder="Experience (e.g., 2 years)">
-      <textarea id="description" placeholder="Describe your skill..."></textarea>
-      <button class="primary" id="post-btn">Publish</button>
-    </div>
+  <!-- MAP -->
+  <div class="section" id="map-section" style="display:none;">
+    <h2>Nearby Users</h2>
+    <div id="map"></div>
   </div>
 
-  <!-- LOGIN POPUP -->
-  <div id="loginPopup" class="modal">
-    <div class="modal-content">
-      <h2>Welcome to SkillConnect</h2>
-      <p style="font-size:0.9rem;color:#555;margin-bottom:10px;">Log in or sign up to share your skills.</p>
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <button class="primary" id="signup-btn">Sign Up</button>
-      <button class="primary" id="login-btn">Login</button>
-    </div>
+  <!-- MESSAGES -->
+  <div class="section" id="dm-section" style="display:none;">
+    <h2>Messages</h2>
+    <input id="dm-to" placeholder="Recipient email">
+    <input id="dm-msg" placeholder="Message">
+    <button class="primary" id="send-dm-btn">Send</button>
+    <div id="dm-messages"></div>
   </div>
 
-  <!-- TOAST -->
-  <div id="toast">New post shared!</div>
+  <!-- PROFILE -->
+  <div class="section" id="profile-section" style="display:none;">
+    <h2>Your Profile</h2>
+    <img src="https://via.placeholder.com/72" id="profile-pic">
+    <input type="file" id="profile-upload">
+    <button class="primary" id="upload-pic-btn">Upload</button>
+    <hr style="margin:16px 0;border-color:#1f2937;">
+    <div id="your-posts"></div>
+  </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+</div>
 
-  <!-- Your app scripts -->
-  <script src="js/app.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/posts.js"></script>
-  <script src="js/profile.js"></script>
-  <script src="js/chat.js"></script>
-  <script src="js/map.js"></script>
+<!-- POST MODAL -->
+<div id="postModal" class="modal">
+  <div class="modal-content">
+    <h3>Share Skill</h3>
+    <input id="skill" placeholder="Skill">
+    <input id="location" placeholder="Location">
+    <input id="experience" placeholder="Experience">
+    <textarea id="description" placeholder="Description"></textarea>
+    <button class="primary" id="post-btn">Publish</button>
+  </div>
+</div>
 
-  <script>
-    // Dark mode toggle
-    const darkToggle = document.getElementById('dark-toggle');
-    darkToggle.addEventListener('click', ()=>{
-      document.body.classList.toggle('dark');
-    });
+<!-- LOGIN -->
+<div id="loginPopup" class="modal">
+  <div class="modal-content">
+    <h3>Welcome</h3>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button class="primary" id="signup-btn">Sign Up</button>
+    <button class="primary" id="login-btn">Login</button>
+  </div>
+</div>
 
-    // Sidebar navigation
-    const sections = ['feed','map','messages','profile'];
-    const navBtns = sections.map(s=>document.getElementById('nav-'+s));
-    navBtns.forEach((btn,i)=>{
-      btn.addEventListener('click',()=>{
-        navBtns.forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        sections.forEach(s=>document.getElementById(s+'-section').style.display='none');
-        document.getElementById(sections[i]+'-section').style.display='block';
-      });
-    });
+<!-- FIREBASE + YOUR SCRIPTS -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-    // Modal logic
-    const postModal = document.getElementById('postModal');
-    document.getElementById('openModalBtn').onclick=()=> postModal.style.display='flex';
-    window.onclick = e=>{ if(e.target==postModal) postModal.style.display='none'; }
+<script src="js/app.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/posts.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/map.js"></script>
 
-    // Post search/filter
-    const searchInput = document.getElementById('search-posts');
-    searchInput.addEventListener('input', ()=>{
-      const query = searchInput.value.toLowerCase();
-      const posts = document.querySelectorAll('.post-card');
-      posts.forEach(post=>{
-        const skill = post.dataset.skill.toLowerCase();
-        const loc = post.dataset.location.toLowerCase();
-        post.style.display = skill.includes(query) || loc.includes(query) ? 'block' : 'none';
-      });
-    });
+<script>
+/* NAV */
+const sections = ['feed','map','messages','profile'];
+sections.forEach(s=>{
+  document.getElementById('nav-'+s).onclick=()=>{
+    sections.forEach(x=>document.getElementById(x+'-section').style.display='none');
+    document.getElementById(s+'-section').style.display='block';
+    sections.forEach(x=>document.getElementById('nav-'+x).classList.remove('active'));
+    document.getElementById('nav-'+s).classList.add('active');
+  }
+});
 
-    // Like button logic
-    document.addEventListener('click', e=>{
-      if(e.target.classList.contains('like-btn')){
-        e.target.classList.toggle('liked');
-      }
-    });
+/* MODAL */
+openModalBtn.onclick=()=>postModal.style.display='flex';
+window.onclick=e=>{ if(e.target===postModal) postModal.style.display='none'; };
+</script>
 
-    // Toast notification
-    function showToast(msg){
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.style.display='block';
-      setTimeout(()=>toast.style.display='none',3000);
-    }
-
-    // Confetti for new post
-    function celebratePost(){
-      confetti({particleCount:80, spread:60, origin:{y:0.6}});
-    }
-  </script>
 </body>
 </html>
