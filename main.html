@@ -2,284 +2,269 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SkillConnect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Skill-O-Connect</title>
 
-<!-- Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ================= BASE ================= */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-body { background: #0b1220; color: #e5e7eb; }
-
-button, input, textarea {
-  background: #020617;
-  border: 1px solid #1f2937;
-  color: #e5e7eb;
-  padding: 10px 12px;
-  border-radius: 8px;
-  outline: none;
+:root {
+  --bg: #f8f9fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --accent: #2563eb;
 }
 
-button { cursor: pointer; }
-button:hover { background: #020617; border-color: #334155; }
-
-.primary {
-  background: #2563eb;
-  border: none;
-}
-.primary:hover {
-  background: #1d4ed8;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
-/* ================= LAYOUT ================= */
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ---------- Layout ---------- */
+.app {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
 .sidebar {
-  position: fixed;
-  left: 0; top: 0;
-  width: 220px;
-  height: 100vh;
-  background: #020617;
-  border-right: 1px solid #1f2937;
-  padding: 20px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  padding: 28px 22px;
 }
 
 .logo {
   font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 30px;
+  font-weight: 700;
+  margin-bottom: 32px;
 }
 
-.nav-btn {
+.nav button {
   width: 100%;
-  text-align: left;
-  margin-bottom: 8px;
   background: transparent;
-  border: none;
-  color: #cbd5f5;
-}
-.nav-btn.active, .nav-btn:hover {
-  background: #020617;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
+.nav button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- Main ---------- */
 .main {
-  margin-left: 220px;
-  padding: 24px;
+  padding: 36px 42px;
 }
 
-/* ================= TOPBAR ================= */
-.topbar {
+/* ---------- Header ---------- */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #1f2937;
-  padding-bottom: 16px;
+  margin-bottom: 32px;
 }
 
-/* ================= SECTIONS ================= */
-.section {
-  background: #020617;
-  border: 1px solid #1f2937;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-/* ================= FEED CARDS ================= */
-.post-card {
-  display: flex;
-  gap: 14px;
-  padding: 14px;
+.primary-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 10px 18px;
   border-radius: 10px;
-  border: 1px solid #1f2937;
-  background: #020617;
-  margin-bottom: 12px;
-}
-
-.post-card img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.post-content h4 {
-  font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
 }
 
-.post-content p {
-  font-size: 13px;
-  color: #9ca3af;
-  margin-top: 2px;
+.primary-btn:hover {
+  opacity: 0.9;
 }
 
-/* ================= MAP ================= */
-#map {
-  width: 100%;
-  height: 420px;
-  border-radius: 10px;
+/* ---------- Feed ---------- */
+.feed {
+  max-width: 820px;
 }
 
-/* ================= MODALS ================= */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
+.post {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  transition: 0.2s ease;
+}
+
+.post:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- Post Header ---------- */
+.post-head {
+  display: flex;
   align-items: center;
-  z-index: 50;
-}
-
-.modal-content {
-  background: #020617;
-  border: 1px solid #1f2937;
-  border-radius: 12px;
-  padding: 20px;
-  width: 90%;
-  max-width: 420px;
-}
-
-/* ================= PROFILE ================= */
-#profile-pic {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  object-fit: cover;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main { margin-left: 0; }
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e5e7eb;
+}
+
+.post-title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.post-meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Post Body ---------- */
+.post-body {
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+/* ---------- Actions ---------- */
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.tag {
+  font-size: 12px;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.action-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: none;
+  }
+  .main {
+    padding: 24px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="logo">SkillConnect</div>
-  <button class="nav-btn active" id="nav-feed">Discover</button>
-  <button class="nav-btn" id="nav-map">Map</button>
-  <button class="nav-btn" id="nav-messages">Messages</button>
-  <button class="nav-btn" id="nav-profile">Profile</button>
-</div>
+<div class="app">
 
-<!-- MAIN -->
-<div class="main">
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div id="user-email-top"></div>
-    <button id="logout-btn" class="primary" style="display:none;">Logout</button>
-  </div>
-
-  <!-- FEED -->
-  <div class="section" id="feed-section">
-    <div class="section-header">
-      <h2>Discover Skills</h2>
-      <button class="primary" id="openModalBtn">Share Skill</button>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">Skill-O-Connect</div>
+    <div class="nav">
+      <button>Home</button>
+      <button>Create Post</button>
+      <button>Messages</button>
+      <button>Profile</button>
     </div>
-    <div id="posts"></div>
-  </div>
+  </aside>
 
-  <!-- MAP -->
-  <div class="section" id="map-section" style="display:none;">
-    <h2>Nearby Users</h2>
-    <div id="map"></div>
-  </div>
+  <!-- Main -->
+  <main class="main">
 
-  <!-- MESSAGES -->
-  <div class="section" id="dm-section" style="display:none;">
-    <h2>Messages</h2>
-    <input id="dm-to" placeholder="Recipient email">
-    <input id="dm-msg" placeholder="Message">
-    <button class="primary" id="send-dm-btn">Send</button>
-    <div id="dm-messages"></div>
-  </div>
+    <div class="header">
+      <h1>Skill Feed</h1>
+      <button class="primary-btn">New Post</button>
+    </div>
 
-  <!-- PROFILE -->
-  <div class="section" id="profile-section" style="display:none;">
-    <h2>Your Profile</h2>
-    <img src="https://via.placeholder.com/72" id="profile-pic">
-    <input type="file" id="profile-upload">
-    <button class="primary" id="upload-pic-btn">Upload</button>
-    <hr style="margin:16px 0;border-color:#1f2937;">
-    <div id="your-posts"></div>
-  </div>
+    <section class="feed">
 
+      <!-- Post -->
+      <div class="post">
+        <div class="post-head">
+          <div class="avatar"></div>
+          <div>
+            <div class="post-title">Web Development</div>
+            <div class="post-meta">3 years experience · admin@skillconnect.com</div>
+          </div>
+        </div>
+
+        <div class="post-body">
+          I build clean, scalable websites using modern JavaScript frameworks.
+          Open to freelance and collaboration opportunities.
+        </div>
+
+        <div class="post-actions">
+          <span class="tag">Frontend</span>
+          <button class="action-btn">Contact</button>
+        </div>
+      </div>
+
+      <!-- Post -->
+      <div class="post">
+        <div class="post-head">
+          <div class="avatar"></div>
+          <div>
+            <div class="post-title">Graphic Design</div>
+            <div class="post-meta">2 years experience · design@skillconnect.com</div>
+          </div>
+        </div>
+
+        <div class="post-body">
+          Specialised in brand identity, posters, and minimal UI visuals.
+        </div>
+
+        <div class="post-actions">
+          <span class="tag">Design</span>
+          <button class="action-btn">Contact</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
 </div>
-
-<!-- POST MODAL -->
-<div id="postModal" class="modal">
-  <div class="modal-content">
-    <h3>Share Skill</h3>
-    <input id="skill" placeholder="Skill">
-    <input id="location" placeholder="Location">
-    <input id="experience" placeholder="Experience">
-    <textarea id="description" placeholder="Description"></textarea>
-    <button class="primary" id="post-btn">Publish</button>
-  </div>
-</div>
-
-<!-- LOGIN -->
-<div id="loginPopup" class="modal">
-  <div class="modal-content">
-    <h3>Welcome</h3>
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button class="primary" id="signup-btn">Sign Up</button>
-    <button class="primary" id="login-btn">Login</button>
-  </div>
-</div>
-
-<!-- FIREBASE + YOUR SCRIPTS -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
-<script src="js/app.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/posts.js"></script>
-<script src="js/profile.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/map.js"></script>
-
-<script>
-/* NAV */
-const sections = ['feed','map','messages','profile'];
-sections.forEach(s=>{
-  document.getElementById('nav-'+s).onclick=()=>{
-    sections.forEach(x=>document.getElementById(x+'-section').style.display='none');
-    document.getElementById(s+'-section').style.display='block';
-    sections.forEach(x=>document.getElementById('nav-'+x).classList.remove('active'));
-    document.getElementById('nav-'+s).classList.add('active');
-  }
-});
-
-/* MODAL */
-openModalBtn.onclick=()=>postModal.style.display='flex';
-window.onclick=e=>{ if(e.target===postModal) postModal.style.display='none'; };
-</script>
 
 </body>
 </html>
