@@ -1,0 +1,13 @@
+{
+  "name": "skill-o-connect",
+  "version": "1.0.0",
+  "description": "SkillConnect - Share, Learn, Grow",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build.js",
+    "vercel-build": "node build.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

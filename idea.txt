@@ -1,0 +1,14 @@
+Problem Statement & Target Users:
+Traditional specialized education and 1-on-1 tutoring platforms charge prohibitive fees, creating severe financial barriers for students, self-taught developers, and lifelong learners. Furthermore, passive video tutorials lack real-time peer accountability, interactive collaboration, and localized mentorship discovery.
+
+Proposed Solution & Core Innovation:
+SkillConnect is a modern, zero-cost reciprocal skill-sharing marketplace that democratizes 1-on-1 mentorship. Instead of monetary transactions, users exchange expertise through a value barter model—trading a skill they excel at (e.g., React.js) to acquire a skill they wish to master (e.g., UI/UX design).
+
+Key innovations include:
+1. Algorithmic Match Engine: Uses Jaccard similarity indexing and Haversine GPS proximity metrics to surface optimal mentor-mentee pairings.
+2. Role Differentiation & Scholar Wishlists: Tailors dedicated learning wishlist profiles for mentees while recognizing top mentors on a community leaderboard.
+3. Collaborative Buildathon Challenges: A dedicated team board where mentors post micro-projects for hands-on, peer-to-peer building.
+4. Rich Project Link Embeds: Allows members to showcase live GitHub repositories, Figma designs, and CodePens without file upload risks.
+
+Technology Stack:
+Built with a responsive frontend using HTML5, Vanilla CSS3 (HSL design system), and ES6 JavaScript. The backend leverages Supabase (PostgreSQL 15, Row-Level Security, and Realtime WebSockets) alongside Leaflet OpenStreetMap for live proximity mapping.
