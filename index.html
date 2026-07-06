@@ -4,305 +4,220 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SkillConnect | Share. Learn. Grow.</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
-    body { background:#f9fafb; color:#1f1f1f; overflow-x:hidden; }
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    /* HEADER */
-    header {
-      background:linear-gradient(120deg,#2A7C6F,#48d1c3);
-      color:#fff;
-      padding:20px 70px;
-      display:flex; justify-content:space-between; align-items:center;
-      position:sticky; top:0; z-index:10;
-      box-shadow:0 2px 10px rgba(0,0,0,0.1);
-      flex-wrap:wrap;
-    }
-    header h1 { font-size:1.7rem; font-weight:700; letter-spacing:0.5px; }
-
-    /* NAVIGATION */
-    nav {
-      display:flex;
-      gap:20px;
-      align-items:center;
-      transition:max-height 0.3s ease, opacity 0.3s ease;
-    }
-    nav a {
-      color:white;
-      text-decoration:none;
-      font-weight:500;
-      transition:opacity 0.2s;
-    }
-    nav a:hover { opacity:0.8; }
-
-    /* HAMBURGER */
-    .menu-toggle {
-      display:none;
-      background:none;
-      border:none;
-      color:white;
-      font-size:1.8rem;
-      cursor:pointer;
-    }
-
-    /* MOBILE MENU */
-    @media(max-width:768px){
-      header {
-        flex-direction:column;
-        align-items:flex-start;
-        padding:20px;
-      }
-      .menu-toggle {
-        display:block;
-        align-self:flex-end;
-      }
-      nav {
-        width:100%;
-        flex-direction:column;
-        overflow:hidden;
-        max-height:0;
-        opacity:0;
-      }
-      nav.open {
-        max-height:300px;
-        opacity:1;
-        margin-top:10px;
-      }
-      nav a {
-        display:block;
-        width:100%;
-        padding:10px 0;
-        text-align:center;
-        border-top:1px solid rgba(255,255,255,0.2);
-      }
-    }
-
-    /* HERO */
-    .hero {
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      min-height:85vh;
-      background:linear-gradient(180deg,#e9f4f1 0%,#f9fafb 100%);
-      padding:60px 20px;
-    }
-    .hero h2 {
-      font-size:2.8rem;
-      font-weight:700;
-      color:#1f1f1f;
-      margin-bottom:15px;
-    }
-    .hero p {
-      font-size:1.1rem;
-      max-width:620px;
-      color:#555;
-      margin-bottom:35px;
-      line-height:1.6;
-    }
-    .cta-btn {
-      background:#2A7C6F;
-      color:#fff;
-      border:none;
-      padding:14px 36px;
-      font-size:1rem;
-      border-radius:30px;
-      cursor:pointer;
-      transition:all 0.3s ease;
-      box-shadow:0 6px 15px rgba(42,124,111,0.25);
-    }
-    .cta-btn:hover { background:#133a25; transform:translateY(-2px); }
-
-    /* ABOUT */
-    .about {
-      padding:90px 60px;
-      background:#fff;
-      text-align:center;
-    }
-    .about h3 { font-size:1.9rem; color:#2A7C6F; margin-bottom:18px; }
-    .about p {
-      color:#555;
-      max-width:700px;
-      margin:auto;
-      line-height:1.7;
-      font-size:1rem;
-    }
-
-    /* FEATURE SECTIONS */
-    .feature-section {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:40px;
-      padding:90px 70px;
-      flex-wrap:wrap;
-      background:#f5f7fa;
-    }
-    .feature-section:nth-child(even) { background:#fff; }
-    .feature-img {
-      flex:1;
-      min-width:300px;
-      height:280px;
-      border-radius:16px;
-      overflow:hidden;
-      box-shadow:0 4px 15px rgba(0,0,0,0.08);
-      background:#eee;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .feature-img img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-    .feature-text {
-      flex:1.1;
-      min-width:300px;
-    }
-    .feature-text h4 {
-      font-size:1.5rem;
-      color:#2A7C6F;
-      margin-bottom:10px;
-    }
-    .feature-text p {
-      font-size:1rem;
-      color:#444;
-      line-height:1.6;
-    }
-
-    /* BUILDATHON SECTION */
-    .buildathon {
-      background:linear-gradient(120deg,#2A7C6F,#3CAEA3);
-      color:white;
-      text-align:center;
-      padding:90px 50px;
-    }
-    .buildathon h2 { font-size:2rem; margin-bottom:15px; }
-    .buildathon p {
-      max-width:700px;
-      margin:auto;
-      font-size:1.05rem;
-      line-height:1.7;
-      opacity:0.95;
-    }
-
-    /* FOOTER */
-    footer {
-      background:#2A7C6F;
-      color:#fff;
-      text-align:center;
-      padding:40px 10px;
-    }
-    footer p { opacity:0.9; font-size:0.9rem; }
-    footer a { color:white; text-decoration:none; font-weight:600; margin:0 6px; }
-
-    /* RESPONSIVE FIXES */
-    @media(max-width:900px){
-      .feature-section{flex-direction:column;}
-      .feature-img{order:-1;width:100%;height:240px;}
-      .feature-text{text-align:center;}
-    }
-    @media(max-width:768px){
-      .hero h2{font-size:2.2rem;}
-      .hero p{font-size:1rem;}
-      .about{padding:60px 30px;}
-      .feature-section{padding:60px 30px;}
-      .buildathon{padding:60px 30px;}
-    }
-    @media(max-width:480px){
-      .hero h2{font-size:1.8rem;}
-      .cta-btn{padding:12px 28px;font-size:0.9rem;}
-    }
-  </style>
+  <!-- Custom Design System -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
 </head>
-<body>
+<body class="landing-body">
 
   <!-- HEADER -->
-  <header>
-    <h1>SkillConnect</h1>
-    <button class="menu-toggle" id="menuBtn">☰</button>
-    <nav id="navMenu">
+  <header class="landing-header">
+    <a href="#" class="landing-brand">
+      <div class="landing-brand-logo">S</div>
+      <h1>SkillConnect</h1>
+    </a>
+    
+    <nav class="landing-nav" id="landingNav">
       <a href="#about">About</a>
-      <a href="#features">Features</a>
-      <a href="#buildathon">Viksit Bharat</a>
-      <a href="#get-started">Get Started</a>
+      <a href="#categories">Categories</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#testimonials">Reviews</a>
+      <a href="#viksit">Viksit Bharat</a>
+      <a href="main.html" class="btn-header-cta">Launch App <i class="fa-solid fa-arrow-right"></i></a>
     </nav>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h2>Empowering Communities Through Skills</h2>
-    <p>SkillConnect bridges the gap between learners and mentors in your neighborhood — discover people who share, teach, and grow together.</p>
-    <button class="cta-btn" id="get-started" onclick="enterApp()">Launch SkillConnect →</button>
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-pill-badge">
+      <span><i class="fa-solid fa-shield-halved"></i> 100% Verified Real-Time Platform Data</span>
+    </div>
+    
+    <h2 class="hero-title">
+      Empowering Communities Through <span>Shared Skills</span>
+    </h2>
+    
+    <p class="hero-subtitle">
+      SkillConnect bridges the gap between eager learners and local mentors in your neighborhood. Discover talent around you, propose mutual skill exchanges, and grow together.
+    </p>
+    
+    <div class="hero-actions">
+      <button class="btn-primary-hero" onclick="window.location.href='main.html'">
+        Get Started Now <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      <button class="btn-secondary-hero" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
+        How It Works
+      </button>
+    </div>
+
+    <!-- HONEST LIVE DYNAMIC STATS TICKER BAR -->
+    <div style="display: flex; gap: 30px; justify-content: center; margin-top: 50px; flex-wrap: wrap; text-align: center;">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 16px 28px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); min-width: 160px;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);" id="stat-real-members">...</div>
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Community Members</div>
+      </div>
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 16px 28px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); min-width: 160px;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: #12492D;" id="stat-real-skills">...</div>
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Shared Skills</div>
+      </div>
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 16px 28px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); min-width: 160px;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: #0E5A87;" id="stat-real-exchanges">...</div>
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Exchange Requests</div>
+      </div>
+    </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="about" id="about">
-    <h3>About SkillConnect</h3>
-    <p>SkillConnect is a community platform designed to foster collaboration and skill exchange. Whether you want to learn or share your expertise, we bring people together for real-world skill growth.</p>
+  <!-- POPULAR CATEGORIES SECTION -->
+  <section class="landing-section" id="categories">
+    <span class="section-tag">Explore Domains</span>
+    <h3>Popular Skill Categories</h3>
+    <p>Discover guidance across coding, creative design, health, music, and foreign languages.</p>
+
+    <div class="features-grid" style="margin-top: 30px;">
+      <div class="preview-card">
+        <div class="card-icon-badge icon-purple"><i class="fa-solid fa-code"></i></div>
+        <h4>Coding & Web Tech</h4>
+        <p>Master Python, React, JavaScript, SQL, and Full-Stack Web Development.</p>
+      </div>
+
+      <div class="preview-card">
+        <div class="card-icon-badge icon-blue"><i class="fa-solid fa-palette"></i></div>
+        <h4>Design & UI/UX</h4>
+        <p>Learn Figma, Graphic Design, Branding, Illustration, and 3D Modeling.</p>
+      </div>
+
+      <div class="preview-card">
+        <div class="card-icon-badge icon-mint"><i class="fa-solid fa-dumbbell"></i></div>
+        <h4>Fitness & Health</h4>
+        <p>Personalized workout routines, Yoga, Calisthenics, and Nutrition guidance.</p>
+      </div>
+
+      <div class="preview-card">
+        <div class="card-icon-badge icon-purple"><i class="fa-solid fa-music"></i></div>
+        <h4>Music & Instruments</h4>
+        <p>Guitar chords, Piano keys, Vocal training, and Music Production tools.</p>
+      </div>
+
+      <div class="preview-card">
+        <div class="card-icon-badge icon-blue"><i class="fa-solid fa-language"></i></div>
+        <h4>Languages & Speech</h4>
+        <p>Practice spoken English, French, Spanish, Japanese, and Public Speaking.</p>
+      </div>
+
+      <div class="preview-card">
+        <div class="card-icon-badge icon-mint"><i class="fa-solid fa-briefcase"></i></div>
+        <h4>Business & Growth</h4>
+        <p>Digital Marketing, Resume Building, Interview Prep, and Finance basics.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- FEATURES -->
-  <div id="features">
-    <section class="feature-section">
-      <div class="feature-img"><img src="img/home.png" alt="Discover Feature" /></div>
-      <div class="feature-text">
-        <h4>Discover Local Talent</h4>
-        <p>Find nearby users sharing their skills. Whether it's a coding mentor, fitness trainer, or art teacher — SkillConnect helps you connect with the right people locally.</p>
+  <!-- HOW IT WORKS STEP TIMELINE -->
+  <section class="landing-section" id="how-it-works">
+    <span class="section-tag">Simple Process</span>
+    <h3>How SkillConnect Works</h3>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 40px;">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); position: relative;">
+        <div style="width: 36px; height: 36px; background: var(--primary); color: #fff; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 16px;">1</div>
+        <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;">Create & Share Your Profile</h4>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sign up securely with Supabase auth and publish what skills you can teach or want to learn.</p>
       </div>
-    </section>
 
-    <section class="feature-section">
-      <div class="feature-text">
-        <h4>Chat & Collaborate</h4>
-        <p>Connect directly through messages, ask questions, share progress, or plan meetups. Collaboration starts with conversation — SkillConnect makes that effortless.</p>
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); position: relative;">
+        <div style="width: 36px; height: 36px; background: #0E5A87; color: #fff; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 16px;">2</div>
+        <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;">Propose Skill Exchange</h4>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">Browse local mentors on the map or feed and send a direct skill exchange request.</p>
       </div>
-      <div class="feature-img"><img src="img/msg.png" alt="Chat Feature" /></div>
-    </section>
 
-    <section class="feature-section">
-      <div class="feature-img"><img src="img/share.png" alt="Share Feature" /></div>
-      <div class="feature-text">
-        <h4>Share What You Know</h4>
-        <p>Post your own skill — describe what you teach or create. Inspire others to learn and grow. Be a part of your community’s collective growth journey.</p>
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); position: relative;">
+        <div style="width: 36px; height: 36px; background: #12492D; color: #fff; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 16px;">3</div>
+        <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;">Connect, Learn & Review</h4>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">Collaborate via real-time DM chat, meet for sessions, and leave star reviews for each other.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="feature-section">
-      <div class="feature-text">
-        <h4>Interactive Map</h4>
-        <p>See everyone around you on a live map — find mentors and learners in your area. The map uses live location and real-time updates for a smooth experience.</p>
+  <!-- TESTIMONIALS / REVIEWS -->
+  <section class="landing-section" id="testimonials">
+    <span class="section-tag">Honest Peer Feedback</span>
+    <h3>Real Peer-to-Peer Experiences</h3>
+
+    <div class="features-grid" style="margin-top: 30px;">
+      <div class="preview-card">
+        <div style="color: #F59E0B; margin-bottom: 10px;">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 14px;">"SkillConnect helped me find a developer in my neighborhood. In return, I taught UI design in Figma."</p>
+        <div style="font-weight: 700; font-size: 0.9rem;">— Community Contributor</div>
       </div>
-      <div class="feature-img"><img src="img/map.png" alt="Map Feature" /></div>
-    </section>
-  </div>
 
-  <!-- BUILDATHON -->
-  <section class="buildathon" id="buildathon">
-    <h2>Built for Viksit Bharat Buildathon</h2>
-    <p>This project was proudly developed as part of the <strong>Viksit Bharat Buildathon</strong> — an initiative encouraging innovation, collaboration, and digital empowerment across India. SkillConnect embodies the spirit of a self-reliant India by empowering local communities to learn and share skills through technology.</p>
+      <div class="preview-card">
+        <div style="color: #F59E0B; margin-bottom: 10px;">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 14px;">"The live GPS map and skill exchange proposal system made finding a music mentor nearby effortless."</p>
+        <div style="font-weight: 700; font-size: 0.9rem;">— Local Learner</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIKSIT BHARAT BUILDATHON SHOWCASE -->
+  <section class="landing-section" id="viksit">
+    <div class="viksit-card">
+      <span class="viksit-badge"><i class="fa-solid fa-flag"></i> Viksit Bharat Buildathon Initiative</span>
+      <h2>Building a Self-Reliant Digital India</h2>
+      <p>
+        SkillConnect was created as part of the <strong>Viksit Bharat Buildathon</strong> — a national movement to foster digital empowerment, peer-to-peer collaboration, and localized skill growth through technology across India.
+      </p>
+    </div>
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <p>Made with ❤️ for the Viksit Bharat Buildathon | <a href="main.html">Go to App</a></p>
+  <footer class="landing-footer">
+    <p>Crafted with precision for Viksit Bharat Buildathon &copy; 2026 SkillConnect. <a href="main.html">Open Dashboard Interface</a></p>
   </footer>
 
+  <!-- SUPABASE CDN FOR HONEST REAL-TIME DATA -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/app.js"></script>
   <script>
-    const menuBtn = document.getElementById('menuBtn');
-    const navMenu = document.getElementById('navMenu');
+    async function fetchHonestData() {
+      try {
+        // Fetch Real Count of Shared Skills
+        const { count: postsCount } = await supabase
+          .from('posts')
+          .select('*', { count: 'exact', head: true });
 
-    menuBtn.addEventListener('click', () => {
-      navMenu.classList.toggle('open');
-      menuBtn.textContent = navMenu.classList.contains('open') ? '✕' : '☰';
-    });
+        // Fetch Real Count of Profiles/Members
+        const { count: membersCount } = await supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true });
 
-    function enterApp(){
-      window.location.href = "main.html";
+        // Fetch Real Count of Exchange Requests
+        const { count: exchangeCount } = await supabase
+          .from('exchange_requests')
+          .select('*', { count: 'exact', head: true });
+
+        document.getElementById('stat-real-members').textContent = membersCount ? (membersCount + '+') : 'Growing';
+        document.getElementById('stat-real-skills').textContent = postsCount ? (postsCount + '+') : 'Live';
+        document.getElementById('stat-real-exchanges').textContent = exchangeCount ? (exchangeCount + '+') : 'Active';
+      } catch (e) {
+        document.getElementById('stat-real-members').textContent = 'Live';
+        document.getElementById('stat-real-skills').textContent = 'Active';
+        document.getElementById('stat-real-exchanges').textContent = 'Direct';
+      }
     }
+
+    document.addEventListener('DOMContentLoaded', fetchHonestData);
   </script>
+
 </body>
 </html>

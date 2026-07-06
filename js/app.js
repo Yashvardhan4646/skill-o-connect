@@ -1,27 +1,17 @@
-// ============================
-//  Firebase Global Setup
-// ============================
+// ==============================================================================
+//  SkillConnect — Supabase Client Initializer (Zero Embedded Keys)
+// ==============================================================================
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCl-etKvWkin6Bfb9TG6aebhAvgU1o4RnM",
-  authDomain: "skillo-fc2af.firebaseapp.com",
-  databaseURL: "https://skillo-fc2af-default-rtdb.firebaseio.com",
-  projectId: "skillo-fc2af",
-  storageBucket: "skillo-fc2af.appspot.com", // ✅ fixed
-  messagingSenderId: "482732605481",
-  appId: "1:482732605481:web:874516448ecca771531c38"
-};
+// Reads exclusively from window environment variables configured at deployment
+const SUPABASE_URL  = window.SUPABASE_URL || window.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON = window.SUPABASE_ANON_KEY || window.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Initialize Firebase once
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-  console.log("✅ Firebase initialized globally");
+if (typeof supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON) {
+  window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  console.log('✅ Supabase client initialized securely');
+} else {
+  console.warn('⚠️ Supabase credentials missing. Please set SUPABASE_URL and SUPABASE_ANON_KEY in your deployment environment.');
 }
 
-// Global access
-window.auth = firebase.auth();
-window.db = firebase.database();
-window.storage = firebase.storage();
-
-// Shorthand for IDs
+// Shorthand DOM helper
 window.$ = (id) => document.getElementById(id);

@@ -1,0 +1,91 @@
+================================================================================
+                              SKILLCONNECT (Skill-O-Connect)
+                       Peer-to-Peer Local & Global Skill Exchange Platform
+================================================================================
+
+PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+SkillConnect is an interactive, peer-to-peer skill-sharing marketplace designed 
+to connect learners and mentors within local communities and worldwide. Built 
+for NYC CodeQuest 2026, the platform enables seamless 1-on-1 knowledge 
+exchanges, collaborative micro-buildathons, and direct mentorship without high monetary 
+barriers.
+
+
+PROBLEM STATEMENT
+--------------------------------------------------------------------------------
+1. High Cost of Quality Mentorship & Skill Education:
+   Traditional online courses and 1-on-1 tutoring platforms charge exorbitant fees, 
+   making specialized skill acquisition inaccessible to students, early-stage developers, 
+   and everyday learners.
+
+2. Lack of Local Community & Peer-to-Peer Connection:
+   Learners often struggle to find nearby mentors or peer study partners in their city 
+   or neighborhood who possess the specific skills they want to master (e.g., React.js, 
+   UI/UX design, French conversation, musical instruments).
+
+3. Passive Learning vs. Interactive Collaboration:
+   Standard video tutorials lack real-time accountability and hands-on collaborative team projects (buildathons).
+
+4. Absence of Algorithmic Matchmaking & Trust Metrics:
+   Finding the right mentor matching a learner's exact skill needs, experience level, 
+   and location proximity is tedious without smart matching algorithms and verified peer reviews.
+
+
+OUR SOLUTION
+--------------------------------------------------------------------------------
+SkillConnect solves these challenges by providing a modern, zero-cost reciprocal skill 
+exchange ecosystem:
+
+1. Reciprocal Skill Barter System:
+   Users can offer a skill they excel at (e.g., Web Development) in return for learning 
+   a skill they want to acquire (e.g., Graphic Design), enabling mutual value exchange.
+
+2. Role Differentiation (Mentors & Mentees):
+   Accounts can register as Mentors, Mentees (Scholars), or Both. Mentees enjoy dedicated 
+   learning wishlist profile cards, while mentors gain public profile showcases and 
+   leaderboard recognition.
+
+3. Smart Algorithmic Matchmaking (Jaccard Index & Location Proximity):
+   An integrated recommendation engine analyzes mutual skill overlap, category tags, 
+   user ratings, and optional GPS coordinates to surface top recommended exchange partners.
+
+4. Rich Embed Project Link Showcase (No File Upload Hazards):
+   Mentors and creators can embed live links to GitHub repositories, Figma prototypes, 
+   CodePens, and portfolios into interactive preview cards without heavy image uploads.
+
+5. Community Buildathon & Skill Challenges Board:
+   A dedicated collaborative board where mentors post micro-projects for team collaboration, 
+   allowing mentees to join buildathon teams and gain real-world practical experience.
+
+6. Live Interactive Proximity Map:
+   Leaflet-powered map displaying local skill offer pins across cities with distance calculation.
+
+7. Trust & Recognition System:
+   Peer star ratings, written reviews, verified skill achievement badges (Master Sensei, 
+   Founder VIP, Rapid Exchanger), and community mentor leaderboard standings.
+
+
+KEY PLATFORM FEATURES
+--------------------------------------------------------------------------------
+• Discover Feed & Live Search: Instant filtering by category tags (Coding, Design, Fitness, Music, Languages) and search query.
+• Quick Skill Match Quiz: 3-question match estimator surfacing optimal mentor recommendations.
+• Split-Pane Direct Messages Inbox: Real-time Supabase messaging system for seamless communication.
+• Public Standalone User Profiles: Accessible viewable profile pages (profile.html?id=USER_ID) for every member.
+• Topbar Notification Center: Live dropdown bell showing pending exchange proposals.
+• Dark & Light Premium UI: Responsive design system with HSL tailored color palette, glassmorphism elements, and smooth micro-animations.
+
+
+TECHNICAL ARCHITECTURE
+--------------------------------------------------------------------------------
+• Frontend: HTML5, CSS3 (Vanilla CSS Custom Properties), JavaScript (ES6+ Modules)
+• Backend & Database: Supabase (PostgreSQL 15, Realtime WebSockets, Storage, Row-Level Security)
+• Mapping Engine: Leaflet OpenStreetMap API
+• Icons & Typography: FontAwesome 6 Vector Icons, Plus Jakarta Sans (Google Fonts)
+
+
+PLATFORM FOUNDER & AUTHOR
+--------------------------------------------------------------------------------
+Platform Creator: Yashvardhan (yashvardhan@atomicmail.io)
+Repository: https://github.com/Yashvardhan4646/skill-o-connect
+================================================================================

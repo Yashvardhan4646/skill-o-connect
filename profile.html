@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile | SkillConnect</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Custom Design System -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+</head>
+<body>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- SIDEBAR (Standardized 7 Items across all pages) -->
+  <aside class="sidebar">
+    <a href="index.html" class="logo-container">
+      <div class="logo-icon">S</div>
+      <span class="logo-text">SkillConnect</span>
+    </a>
+
+    <nav class="nav-group">
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-compass"></i>
+        <span>Discover</span>
+      </a>
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <span>Live Map</span>
+      </a>
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-trophy"></i>
+        <span>Leaderboard</span>
+      </a>
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Sessions</span>
+      </a>
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-rocket"></i>
+        <span>Challenges</span>
+      </a>
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-comments"></i>
+        <span>Messages</span>
+      </a>
+      <a href="main.html" class="nav-btn">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div>
+        <a href="main.html" class="btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+          <i class="fa-solid fa-arrow-left"></i> Back to Discover
+        </a>
+      </div>
+
+      <div class="controls">
+        <button class="btn-icon-toggle" id="dark-toggle" title="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- PUBLIC USER PROFILE CARD -->
+    <section class="section" id="public-profile-header">
+      <div class="skeleton-card">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-lines">
+          <div class="skeleton-line" style="width:40%;"></div>
+          <div class="skeleton-line" style="width:25%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENTOR PROJECT LINK EMBEDS SHOWCASE -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h3><i class="fa-solid fa-laptop-code" style="color:var(--primary);"></i> Portfolio & Project Link Showcases</h3>
+          <p>Verified project embeds and repository showcases</p>
+        </div>
+      </div>
+      <div id="public-project-embeds" class="project-embed-grid">
+        <p style="color:var(--text-muted);font-size:0.88rem;">No project link showcases added yet.</p>
+      </div>
+    </section>
+
+    <!-- MENTOR SHARED SKILLS LIST -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h3><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Shared Skills & Guidance</h3>
+          <p>Skills offered by this community mentor</p>
+        </div>
+      </div>
+      <div id="public-user-posts">
+        <p style="color:var(--text-muted);font-size:0.88rem;">Loading mentor skill posts...</p>
+      </div>
+    </section>
+
+    <!-- PEER REVIEWS & RATINGS SECTION -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h3><i class="fa-solid fa-star" style="color:#F59E0B;"></i> Peer Reviews & Ratings</h3>
+          <p>Feedback left by community learners</p>
+        </div>
+      </div>
+      <div id="public-user-reviews">
+        <p style="color:var(--text-muted);font-size:0.88rem;">Loading reviews...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- REQUEST SKILL EXCHANGE MODAL -->
+  <div id="exchangeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Propose Skill Exchange</h3>
+        <button class="btn-close-modal" onclick="document.getElementById('exchangeModal').classList.remove('active')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:12px;" id="exchange-modal-subtitle">
+        Propose a mutual skill session with this mentor.
+      </p>
+      <input type="text" id="exchange-skill-offer" placeholder="Skill you can offer in return (e.g. Graphic Design)">
+      <textarea id="exchange-message" placeholder="Include a brief message or availability..."></textarea>
+      <button class="primary" id="submit-exchange-btn" style="width:100%;">
+        <i class="fa-solid fa-handshake"></i> Send Exchange Proposal
+      </button>
+    </div>
+  </div>
+
+  <!-- LEAVE REVIEW & RATING MODAL -->
+  <div id="reviewModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Rate & Review Mentor</h3>
+        <button class="btn-close-modal" onclick="document.getElementById('reviewModal').classList.remove('active')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:12px;" id="review-modal-subtitle">
+        Share your experience learning from this mentor.
+      </p>
+
+      <div class="star-rating-picker" id="star-picker">
+        <i class="fa-solid fa-star selected" data-val="1"></i>
+        <i class="fa-solid fa-star selected" data-val="2"></i>
+        <i class="fa-solid fa-star selected" data-val="3"></i>
+        <i class="fa-solid fa-star selected" data-val="4"></i>
+        <i class="fa-solid fa-star selected" data-val="5"></i>
+      </div>
+      
+      <textarea id="review-comment" placeholder="Write a short review about your session..."></textarea>
+      <button class="primary" id="submit-review-btn" style="width:100%;">
+        <i class="fa-solid fa-star"></i> Submit Review
+      </button>
+    </div>
+  </div>
+
+  <!-- LOGIN / SIGNUP MODAL -->
+  <div id="loginPopup" class="modal">
+    <div class="login-box">
+      <div class="modal-header">
+        <h3>Welcome to SkillConnect</h3>
+      </div>
+      <p style="font-size:.9rem;color:var(--text-secondary);margin-bottom:16px;">
+        Sign in or create an account to share skills and send messages.
+      </p>
+      <input type="email"    id="email"    placeholder="Email Address">
+      <input type="password" id="password" placeholder="Password (min 6 characters)">
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <button class="primary" id="login-btn" style="flex:1;">
+          <i class="fa-solid fa-right-to-bracket"></i> Log In
+        </button>
+        <button class="primary" id="signup-btn"
+          style="flex:1;background:var(--accent-blue);color:#0B466D;">
+          <i class="fa-solid fa-user-plus"></i> Sign Up
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPABASE CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script src="js/app.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/user-profile.js"></script>
+
+</body>
+</html>
