@@ -574,7 +574,16 @@
     <div class="login-box">
       <div class="modal-header">
         <h3>Welcome to SkillConnect</h3>
+        <button class="btn-close-modal" id="close-login-btn" onclick="document.getElementById('loginPopup').classList.remove('active')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
+
+      <div id="auth-notice-banner" class="auth-notice-banner" style="display:none;">
+        <i class="fa-solid fa-lock"></i>
+        <span id="auth-notice-text">Please log in or sign up to access this feature.</span>
+      </div>
+
       <p style="font-size:.9rem;color:var(--text-secondary);margin-bottom:12px;">
         Sign in or create an account to share skills and send messages.
       </p>

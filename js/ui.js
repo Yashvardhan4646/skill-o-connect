@@ -120,6 +120,19 @@ function hideAllSections() {
   if (challengesSection) challengesSection.style.display = 'none';
 }
 
+async function checkAuthGuard(reason) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    if (typeof window.requireAuth === 'function') {
+      window.requireAuth(reason);
+    } else {
+      document.getElementById('loginPopup')?.classList.add('active');
+    }
+    return false;
+  }
+  return true;
+}
+
 if (navFeed) {
   navFeed.onclick = () => {
     hideAllSections();
@@ -129,7 +142,8 @@ if (navFeed) {
 }
 
 if (navMessages) {
-  navMessages.onclick = () => {
+  navMessages.onclick = async () => {
+    if (!(await checkAuthGuard('view your Direct Messages inbox'))) return;
     hideAllSections();
     if (dm) dm.style.display = 'block';
     setActiveNav('nav-messages');
@@ -137,7 +151,8 @@ if (navMessages) {
 }
 
 if (navProfile) {
-  navProfile.onclick = () => {
+  navProfile.onclick = async () => {
+    if (!(await checkAuthGuard('view your Profile & Dashboard'))) return;
     hideAllSections();
     if (profile) profile.style.display = 'block';
     setActiveNav('nav-profile');
@@ -163,7 +178,8 @@ if (navLeaderboard) {
 }
 
 if (navSchedule) {
-  navSchedule.onclick = () => {
+  navSchedule.onclick = async () => {
+    if (!(await checkAuthGuard('view your Scheduled Sessions'))) return;
     hideAllSections();
     if (scheduleSection) scheduleSection.style.display = 'block';
     setActiveNav('nav-schedule');

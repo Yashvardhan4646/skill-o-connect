@@ -78,8 +78,11 @@ if (openModalBtn) {
   openModalBtn.onclick = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      document.getElementById('loginPopup')?.classList.add('active');
-      showToast('Please log in to share a skill.', 'info');
+      if (typeof window.requireAuth === 'function') {
+        window.requireAuth('share a new skill post');
+      } else {
+        document.getElementById('loginPopup')?.classList.add('active');
+      }
       return;
     }
     postModal.classList.add('active');
@@ -456,8 +459,12 @@ let activeExchangeRecipientId = null;
 async function openExchangeModal(postId, recipientId, skillName) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    document.getElementById('loginPopup')?.classList.add('active');
-    return showToast('Please log in to request an exchange.', 'error');
+    if (typeof window.requireAuth === 'function') {
+      window.requireAuth('request a skill exchange');
+    } else {
+      document.getElementById('loginPopup')?.classList.add('active');
+    }
+    return;
   }
 
   activeExchangePostId = postId;
@@ -512,8 +519,12 @@ let activeMentorId = null;
 async function openReviewModal(mentorId, mentorEmail) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    document.getElementById('loginPopup')?.classList.add('active');
-    return showToast('Please log in to leave a review.', 'error');
+    if (typeof window.requireAuth === 'function') {
+      window.requireAuth('rate and review a mentor');
+    } else {
+      document.getElementById('loginPopup')?.classList.add('active');
+    }
+    return;
   }
   if (user.id === mentorId) return showToast('You cannot review yourself.', 'info');
 

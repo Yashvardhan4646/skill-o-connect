@@ -121,6 +121,27 @@ async function handleForgotPassword() {
   }
 }
 
+// ── Require Auth Guard Helper ───────────────────────────────────
+function requireAuth(reason = 'access this feature') {
+  const loginPopup = document.getElementById('loginPopup');
+  const banner     = document.getElementById('auth-notice-banner');
+  const text       = document.getElementById('auth-notice-text');
+
+  if (banner && text) {
+    text.textContent = `Please log in or sign up to ${reason}.`;
+    banner.style.display = 'flex';
+  }
+
+  if (loginPopup) {
+    loginPopup.classList.add('active');
+  }
+
+  if (typeof showToast === 'function') {
+    showToast(`Account required to ${reason}.`, 'info', 4000);
+  }
+}
+window.requireAuth = requireAuth;
+
 // ── Auth State Listener (Silent Session Restores) ──────────────
 supabase.auth.onAuthStateChange((event, session) => {
   const user           = session?.user ?? null;
@@ -128,9 +149,11 @@ supabase.auth.onAuthStateChange((event, session) => {
   const userEmailTop   = document.getElementById('user-email-top');
   const userPillLetter = document.getElementById('user-pill-letter');
   const guestGreeting  = document.getElementById('guest-greeting');
+  const banner         = document.getElementById('auth-notice-banner');
 
   if (user) {
     if (loginPopup)     loginPopup.classList.remove('active');
+    if (banner)         banner.style.display = 'none';
     if (logoutBtn)      logoutBtn.style.display = 'inline-flex';
     if (userPillWrap)   userPillWrap.style.display = 'flex';
     if (userEmailTop)   userEmailTop.textContent = user.email;
@@ -140,6 +163,6 @@ supabase.auth.onAuthStateChange((event, session) => {
     if (logoutBtn)      logoutBtn.style.display = 'none';
     if (userPillWrap)   userPillWrap.style.display = 'none';
     if (guestGreeting)  guestGreeting.style.display = 'block';
-    if (loginPopup)     loginPopup.classList.add('active');
   }
 });
+

@@ -1604,3 +1604,26 @@ button.disabled {
   border-top: 1px solid var(--border-color);
 }
 
+/* 5. Authentication Notice Banner */
+.auth-notice-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--accent-rose, #ef4444);
+  color: var(--accent-rose-dark, #dc2626);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+body.dark .auth-notice-banner {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-color: #f87171;
+}
+
+
